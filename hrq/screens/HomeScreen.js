@@ -1,7 +1,8 @@
+import * as WebBrowser from 'expo-web-browser';
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, StyleSheet, Button, AsyncStorage, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Button, AsyncStorage } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Camera } from 'expo-camera';
 import { BarCodeScanner } from 'expo-barcode-scanner';
@@ -17,9 +18,9 @@ export default function HomeScreen () {
 
   console.log(user, '===========home')
 
-  const handleBarCodeScanned = ({ type, data }) => {
+  const handleBarCodeScanned = ({ data }) => {
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    WebBrowser.openBrowserAsync(data)
   };
 
   useEffect(() => {
@@ -48,7 +49,7 @@ export default function HomeScreen () {
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
         <Text>Nama Karyawan: {user.name}</Text>
         <Camera
-          style={{ flex: 1, height: 300, marginBottom: 30 }}
+          style={{ flex: 1, height: 300, marginBottom: 30, marginTop: 30 }}
           barCodeScannerSettings={{
             barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
           }}
@@ -57,9 +58,10 @@ export default function HomeScreen () {
           <View
             style={{
               flex: 1,
-              backgroundColor: 'transparent',
-              flexDirection: 'row',
+              flexDirection: 'column',
+              justifyContent: 'flex-end',
             }}>
+            {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
           </View>
         </Camera>
         <Button
