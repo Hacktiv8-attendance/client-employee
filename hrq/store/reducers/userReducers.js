@@ -1,10 +1,11 @@
 const initialReducers = {
-  token: '',
   payload: {
     id: 0,
     email: '',
     authLevel: 0,
+    name: '',
   },
+  token: '',
   login: {
     email: '',
     password: '',
@@ -24,7 +25,7 @@ export default function userReducers (state = initialReducers, action) {
       return {...state, login: {email: state.login.email, password: action.payload}}
     case 'SET_LOADING':
       console.log('masuk root set Loading')
-      return {...state, loading: !state.loading}
+      return {...state, loading: action.payload}
     case 'SET_ERROR':
       console.log('masuk root set ERROR')
       return {...state, error: action.payload}

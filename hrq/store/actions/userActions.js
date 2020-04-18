@@ -21,9 +21,10 @@ const setPassword = (password) => {
   }
 }
 
-const setLoading = () => {
+const setLoading = (data) => {
   return {
-    type: 'SET_LOADING'
+    type: 'SET_LOADING',
+    payload: data
   }
 }
 
@@ -36,8 +37,7 @@ const setError = (error) => {
 
 const login = (data) => {
   return (dispatch) => {
-    dispatch(setLoading())
-    console.log('masok function')
+    dispatch(setLoading(true))
     axios({
       method: 'post',
       url: 'http://127.0.0.1:3000/employee/login',
@@ -47,13 +47,42 @@ const login = (data) => {
       .then(({ data }) => {
         console.log(data, '===succsess')
         dispatch(setUser(data))
-        dispatch(setLoading())
+        dispatch(setLoading(false))
       })
       .catch(err => {
         console.log(err)
         dispatch(setError(err))
-        dispatch(setLoading())
+        dispatch(setLoading(false))
       })
+  }
+}
+
+const absent = (data) => {
+  return (dispatch) => {
+    dispatch(setLoading(true))
+    axios({
+      method: 'post',
+      url: 'http://127.0.0.1:3000/employee/sendQR',
+      data,
+      headers: {
+        token: data.token
+      }
+    })
+    .then(({ data }) => {
+      dispatch(setAbsent(data))
+      dispatch(setLoading(false))
+    })
+    .catch(err => {
+      dispatch(setError(err))
+      dispatch(setLoading(false))
+    })
+  }
+}
+
+const setAbsent = (status) => {
+  return {
+    type: 'SET_ABSENT',
+    payload: status
   }
 }
 
@@ -61,5 +90,7 @@ export default {
   login,
   setUser,
   setPassword,
-  setEmail
+  setEmail,
+  absent,
+  setLoading
 }
