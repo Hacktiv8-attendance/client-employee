@@ -15,19 +15,19 @@ export default function BottomTabNavigator({ navigation, route }) {
   return (
     <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
       <BottomTab.Screen
-        name="ClaimCuti"
-        component={ClaimCutiScreen}
-        options={{
-          title: 'Claim Cuti',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="ios-filing" />,
-        }}
-      />
-      <BottomTab.Screen
         name="Scan"
         component={HomeScreen}
         options={{
           title: 'Scan',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-qr-scanner" />,
+        }}
+      />
+      <BottomTab.Screen
+        name="ClaimCuti"
+        component={ClaimCutiScreen}
+        options={{
+          title: 'Claim Cuti',
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="ios-filing" />,
         }}
       />
       <BottomTab.Screen

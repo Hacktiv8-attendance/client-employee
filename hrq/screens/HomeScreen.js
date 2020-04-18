@@ -2,7 +2,7 @@ import * as WebBrowser from 'expo-web-browser';
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, StyleSheet, Button, AsyncStorage } from 'react-native';
+import { View, Text, StyleSheet, Button, AsyncStorage, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Camera } from 'expo-camera';
 import { BarCodeScanner } from 'expo-barcode-scanner';
@@ -16,11 +16,19 @@ export default function HomeScreen () {
   const dispatch = useDispatch()
   const navigation = useNavigation()
 
-  console.log(user, '===========home')
+  const storeData = async (user) => {
+    try {
+      console.log(user, '==========store data================')
+      await AsyncStorage.setItem('userStorage', JSON.stringify(user))
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    dispatch(allAction.user.absent({ jwt: data, EmployeeId: user.payload.id, token: user.token}))
   };
 
   useEffect(() => {
@@ -28,7 +36,12 @@ export default function HomeScreen () {
       const { status } = await Camera.requestPermissionsAsync();
       setHasPermission(status === 'granted');
     })();
+    dispatch(allAction.user.setLoading(false))
   }, []);
+
+  if(user.token) {
+    storeData({ token: user.token, payload: user.payload})
+  }
 
   if(user.loading) return (
     <View>
@@ -44,10 +57,13 @@ export default function HomeScreen () {
     return <Text>No access to camera</Text>;
   }
 
+  console.log(scanned)
+  console.log(hasPermission)
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-        <Text>Nama Karyawan: {user.name}</Text>
+        <Text>Nama Karyawan: {user.payload.name}</Text>
         <Camera
           style={{ flex: 1, height: 300, marginBottom: 30, marginTop: 30 }}
           barCodeScannerSettings={{
@@ -59,11 +75,22 @@ export default function HomeScreen () {
             style={{
               flex: 1,
               flexDirection: 'column',
-              justifyContent: 'flex-end',
+              justifyContent: 'center',
+              alignItems: 'center'
             }}>
-            {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
           </View>
         </Camera>
+
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+          {scanned && <Button title='Tap to Scan Again' onPress={() => setScanned(false)} />}
+        </View>
+
         <Button
           onPress={ async () => {
             await AsyncStorage.removeItem('userStorage')

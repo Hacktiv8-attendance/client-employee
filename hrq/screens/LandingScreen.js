@@ -28,6 +28,7 @@ export default function LandingScreen () {
         navigation.navigate('Root')
       } else {
         console.log('kosooooong')
+        dispatch(allAction.user.setLoading(false))
       }
     } catch (error) {
       console.log(error)
@@ -35,23 +36,14 @@ export default function LandingScreen () {
   }
 
   useEffect (() => {
+    dispatch(allAction.user.setLoading(true))
     retrieveData()
   }, [])
-
-  const storeData = async (user) => {
-    try {
-      console.log(user, '==========store data================')
-      await AsyncStorage.setItem('userStorage', JSON.stringify(user))
-      navigation.navigate('Root')
-    } catch (error) {
-      console.log(error)
-    }
-  }
 
   const handleLogin = () => {
     console.log('masuk')
     dispatch(allAction.user.login({email, password}))
-    storeData({ token: user.token, payload: user.payload })
+    navigation.navigate('Root')
     setEmail('')
     setPassword('')
   }
