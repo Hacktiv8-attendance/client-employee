@@ -18,9 +18,9 @@ export default function HomeScreen () {
 
   console.log(user, '===========home')
 
-  const handleBarCodeScanned = ({ data }) => {
+  const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    WebBrowser.openBrowserAsync(data)
+    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   };
 
   useEffect(() => {
