@@ -1,4 +1,6 @@
 import axios from 'axios';
+// import { useNavigation } from '@react-navigation/native'
+// const navigation = useNavigation()
 
 const setUser = (user) => {
   return {
@@ -31,6 +33,13 @@ const setError = (error) => {
   return {
     type: 'SET_ERROR',
     payload: error
+  }
+}
+
+const setResetPassword = (value) => {
+  return {
+    type: 'SET_RESET_PASSWORD',
+    payload: value
   }
 }
 
@@ -68,10 +77,11 @@ const resetPassword = (data) => {
     })
       .then(({ data }) => {
         console.log(data)
+        dispatch(setResetPassword(true))
       })
       .catch(err => {
         console.log('INI ERRORRR')
-        console.log(err)
+        console.log(err.name)
         dispatch(setError(err))
       })
       .finally(() => {

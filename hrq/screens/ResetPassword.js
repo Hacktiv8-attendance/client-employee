@@ -3,15 +3,18 @@ import { useDispatch, useSelector } from 'react-redux'
 import { StyleSheet,View, Text, Image, TextInput, TouchableOpacity, AsyncStorage } from 'react-native';
 import Constant from 'expo-constants';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native'
 import allAction from '../store/actions';
 
 export default function ResetPassword() {
-    let user = useSelector(state => state.user)
+    const navigation = useNavigation()
     const dispatch = useDispatch()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    let user = useSelector(state => state.user)
+    
 
-    function resetPassword () {
+    function resetPasswordButton () {
         console.log({
             email,
             password
@@ -20,6 +23,11 @@ export default function ResetPassword() {
             email,
             password
         }))
+
+        // dispatch(allAction.user.forgetPassword({
+        //     email,
+        //     password
+        // }))
     }
 
     // const storeData = async (user) => {
@@ -42,7 +50,7 @@ export default function ResetPassword() {
     //       <Text>Loading</Text>
     //     </View>
     // )
-
+    if (user.resetPassword) navigation.navigate("Login")
     return(
         <View style={styles.container}>
           <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
@@ -77,7 +85,7 @@ export default function ResetPassword() {
             <View>
               <TouchableOpacity 
                 style={styles.button}
-                onPress={resetPassword}
+                onPress={resetPasswordButton}
               >
                 <Text style={styles.buttonText}>Confirm</Text>
               </TouchableOpacity>

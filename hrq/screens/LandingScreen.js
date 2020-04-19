@@ -39,6 +39,7 @@ export default function LandingScreen () {
 
   useEffect (() => {
     retrieveData()
+    dispatch(allAction.user.resetPassword(false))
   }, [])
 
   const storeData = async (user) => {

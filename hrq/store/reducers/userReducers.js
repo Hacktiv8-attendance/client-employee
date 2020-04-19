@@ -29,6 +29,9 @@ export default function userReducers (state = initialReducers, action) {
     case 'SET_ERROR':
       console.log('masuk root set ERROR')
       return {...state, error: action.payload}
+    case 'SET_RESET_PASSWORD':
+      console.log('masuk root set reset password')
+      return {...state, resetPassword: action.payload}
     default:
       console.log('masuk default')
       return state;
