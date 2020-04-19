@@ -53,7 +53,7 @@ const absent = (data) => {
       }
     })
     .then(({ data }) => {
-      dispatch(setAbsent(data))
+      dispatch(setStatusAbsence(data))
       dispatch(setLoading(false))
     })
     .catch(err => {
@@ -63,9 +63,39 @@ const absent = (data) => {
   }
 }
 
-const setAbsent = (status) => {
+const setAbsence = (absence) => {
   return {
-    type: 'SET_ABSENT',
+    type: 'SET_ABSENCES',
+    payload: absence
+  }
+}
+
+const fetchAbsence = ({ id, token }) => {
+  return (dispatch) => {
+    dispatch(setLoading(true))
+    axios({
+      method: 'get',
+      url: `http://127.0.0.1:3000/employee/absence/${id}`,
+      headers: {
+        token
+      }
+    })
+    .then(({ data }) => {
+      console.log(data)
+      dispatch(setAbsence(data))
+      dispatch(setLoading(false))
+    })
+    .catch(err => {
+      console.log(err.response.data.message)
+      dispatch(setError(err.response.data.message))
+      dispatch(setLoading(false))
+    }) 
+  }
+}
+
+const setStatusAbsence = (status) => {
+  return {
+    type: 'SET_STATUS_ABSENCE',
     payload: status
   }
 }
@@ -83,5 +113,6 @@ export default {
   absent,
   setLoading,
   setError,
-  setLogin
+  setLogin,
+  fetchAbsence
 }

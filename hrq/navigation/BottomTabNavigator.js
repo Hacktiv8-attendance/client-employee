@@ -5,12 +5,14 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import ClaimCutiScreen from '../screens/ClaimCutiScreen';
+import Drawer from './DrawerSideNavigator';
+import History from '../screens/History';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
 
 export default function BottomTabNavigator({ navigation, route }) {
-  navigation.setOptions({ headerTitle: getHeaderTitle(route) });
+  navigation.setOptions({ headerTitle: '' });
 
   return (
     <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
@@ -32,7 +34,7 @@ export default function BottomTabNavigator({ navigation, route }) {
       />
       <BottomTab.Screen
         name="Links"
-        component={LinksScreen}
+        component={History}
         options={{
           title: 'History',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="ios-bookmarks" />,
@@ -40,15 +42,4 @@ export default function BottomTabNavigator({ navigation, route }) {
       />
     </BottomTab.Navigator>
   );
-}
-
-function getHeaderTitle(route) {
-  const routeName = route.state?.routes[route.state.index]?.name ?? INITIAL_ROUTE_NAME;
-
-  switch (routeName) {
-    case 'Home':
-      return 'Scanned';
-    case 'Links':
-      return 'Links to learn more';
-  }
 }
