@@ -7,20 +7,6 @@ const setUser = (user) => {
   }
 }
 
-const setEmail = (email) => {
-  return {
-    type: 'SET_EMAIL',
-    payload: email,
-  }
-}
-
-const setPassword = (password) => {
-  return {
-    type: 'SET_PASSWORD',
-    payload: password
-  }
-}
-
 const setLoading = (data) => {
   return {
     type: 'SET_LOADING',
@@ -37,7 +23,6 @@ const setError = (error) => {
 
 const login = (data) => {
   return (dispatch) => {
-    dispatch(setLoading(true))
     axios({
       method: 'post',
       url: 'http://127.0.0.1:3000/employee/login',
@@ -47,12 +32,11 @@ const login = (data) => {
       .then(({ data }) => {
         console.log(data, '===succsess')
         dispatch(setUser(data))
-        dispatch(setLoading(false))
+        dispatch(setLogin(true))
       })
       .catch(err => {
-        console.log(err)
-        dispatch(setError(err))
-        dispatch(setLoading(false))
+        console.log(err.response.data.message)
+        dispatch(setError(err.response.data.message))
       })
   }
 }
@@ -86,11 +70,18 @@ const setAbsent = (status) => {
   }
 }
 
+const setLogin = (status) => {
+  return {
+    type: 'SET_LOGIN',
+    payload: status
+  }
+}
+
 export default {
   login,
   setUser,
-  setPassword,
-  setEmail,
   absent,
-  setLoading
+  setLoading,
+  setError,
+  setLogin
 }

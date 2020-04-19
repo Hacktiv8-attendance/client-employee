@@ -1,7 +1,9 @@
 import React, { useState, useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
-import { StyleSheet,View, Text, Image, TextInput, TouchableOpacity, AsyncStorage } from 'react-native';
+import { StyleSheet,View, Text, Image, TextInput, TouchableOpacity,
+AsyncStorage, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard,
+ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Constant from 'expo-constants';
 import allAction from '../store/actions';
@@ -13,6 +15,7 @@ export default function LandingScreen () {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [btnLoading, setBtnLoading] = useState(false)
 
   const linkForgotPassword = (
     <Text style={styles.textHelpLink}>Click here.</Text>
@@ -42,12 +45,17 @@ export default function LandingScreen () {
 
   const handleLogin = () => {
     console.log('masuk')
+    setBtnLoading(true)
     dispatch(allAction.user.login({email, password}))
+  }
+
+  if (user.successLogin) {
     navigation.navigate('Root')
+    dispatch(allAction.user.setLogin(false))
+    setBtnLoading(false)
     setEmail('')
     setPassword('')
   }
-
 
   function handleEmail (email) {
     setEmail(email)
@@ -57,61 +65,86 @@ export default function LandingScreen () {
     setPassword(password)
   }
 
-  if(user.loading) return (
-    <View>
-      <Text>Loading</Text>
+  if (user.error) {
+    setTimeout(() => {
+      dispatch(allAction.user.setError(null))
+    }, 5000)
+    setTimeout(() => {
+      setBtnLoading(false)
+    })
+  }
+
+  if (user.loading) return (
+    <View style={styles.containerLoading}>
+      <ActivityIndicator
+        size='large'
+        color='#11999e'
+      />
     </View>
   )
 
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-        <View>
-          <Text style={styles.textHeader}>Welcome to HRQ</Text>
-        </View>
-      
-        <View style={styles.logoContainer}>
-          <Image
-            source={require('../assets/images/login-logo.jpeg')}
-            style={styles.logoImage}
-          />
-        </View>
+      <KeyboardAvoidingView>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View>
+            <View>
+              <Text style={styles.textHeader}>Welcome to HRQ</Text>
+            </View>
+          
+            <View style={styles.logoContainer}>
+              <Image
+                source={require('../assets/images/login-logo.jpeg')}
+                style={styles.logoImage}
+              />
+            </View>
 
-        <View>
-          <Text style={styles.textLabel}>Email: </Text>
+            <View>
+              {user.error
+              ? <Text style={styles.errorText}>{user.error}</Text>
+              : <Text style={styles.hiddenText}>Error</Text>}
 
-          <TextInput
-            value={email}
-            onChangeText={email => handleEmail(email)}
-            placeholder='example@example.com'
-            keyboardType="email-address"
-            textContentType="emailAddress"
-            style={styles.input}
-          />
+              <Text style={styles.textLabel}>Email: </Text>
 
-          <Text style={styles.textLabel}>Password: </Text>
+              <TextInput
+                value={email}
+                onChangeText={email => handleEmail(email)}
+                placeholder='example@example.com'
+                keyboardType="email-address"
+                textContentType="emailAddress"
+                style={styles.input}
+              />
 
-          <TextInput
-            value={password}
-            onChangeText={password => handlePassword(password)}
-            placeholder='password'
-            textContentType="password"
-            secureTextEntry={true}
-            style={styles.input}
-          />
+              <Text style={styles.textLabel}>Password: </Text>
 
-        </View>
-        
-        <View>
-          <TouchableOpacity style={styles.button} onPress={handleLogin}>
-            <Text style={styles.buttonText}>Login</Text>
-          </TouchableOpacity>
-        </View>
+              <TextInput
+                value={password}
+                onChangeText={password => handlePassword(password)}
+                placeholder='password'
+                textContentType="password"
+                secureTextEntry={true}
+                style={styles.input}
+              />
 
-        <View style={styles.containerHelp}>
-          <Text style={styles.textHelp}>forgot Password? {linkForgotPassword}</Text>
-        </View>
-      </ScrollView>
+            </View>
+            
+            <View>
+              <TouchableOpacity style={styles.button} onPress={handleLogin}>
+                {btnLoading
+                  ? <ActivityIndicator
+                      size='small'
+                      color='#e4f9f5'
+                    />
+                  : <Text style={styles.buttonText}>Login</Text>}
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.containerHelp}>
+              <Text style={styles.textHelp}>forgot Password? {linkForgotPassword}</Text>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </View>
   );
 };
@@ -120,9 +153,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#e4f9f5',
+    paddingTop: Constant.statusBarHeight,
+    justifyContent: 'center'
+  },
+  containerLoading: {
+    flex: 1,
+    backgroundColor: '#e4f9f5',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   contentContainer: {
-    paddingTop: Constant.statusBarHeight,
+    justifyContent: 'center',
   },
   containerText: {
     marginLeft: 30,
@@ -131,18 +172,26 @@ const styles = StyleSheet.create({
   containerHelp: {
     marginTop: 10
   },
-  textLogin: {
-    fontSize: 30,
+  hiddenText: {
+    marginLeft: 30,
+    marginBottom: 10,
+    fontSize: 20,
+    color: '#e4f9f5'
+  },
+  errorText: {
+    marginBottom: 10,
+    fontSize: 20,
     fontWeight: 'bold',
+    textAlign: 'center'
   },
   textHeader: {
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 30,
-    marginTop: 30,
   },
   buttonText: {
     textAlign: 'center',
+    color: '#e4f9f5'
   },
   textLabel: {
     marginLeft: 30,
@@ -159,7 +208,6 @@ const styles = StyleSheet.create({
     height: 160,
     resizeMode: 'contain',
     marginTop: 3,
-    marginLeft: -10,
   },
   logoContainer: {
     alignItems: 'center',
