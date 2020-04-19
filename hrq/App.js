@@ -8,6 +8,7 @@ import thunk from 'redux-thunk';
 
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 import LoginScreen from './screens/LandingScreen';
+import ResetPassword from './screens/ResetPassword'
 import rootReducers from './store/reducers/rootReducers';
 
 const Stack = createStackNavigator();
@@ -30,8 +31,13 @@ export default function App() {
               }}
             />
             <Stack.Screen
-            name="Root"
-            component={BottomTabNavigator} />
+              name="Root"
+              component={BottomTabNavigator} 
+            />
+            <Stack.Screen
+              name="ResetPassword"
+              component={ResetPassword} 
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </View>

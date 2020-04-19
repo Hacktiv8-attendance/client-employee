@@ -11,6 +11,7 @@ const initialReducers = {
   },
   loading: false,
   error: null,
+  resetPassword: false 
 }
 
 export default function userReducers (state = initialReducers, action) {

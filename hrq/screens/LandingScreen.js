@@ -15,7 +15,10 @@ export default function LandingScreen () {
   const [password, setPassword] = useState('');
 
   const linkForgotPassword = (
-    <Text style={styles.textHelpLink}>Click here.</Text>
+    <Text 
+      style={styles.textHelpLink}
+      onPress={forgetPassword}
+    >Click here.</Text>
   )
 
   const retrieveData = async () => {
@@ -63,6 +66,10 @@ export default function LandingScreen () {
 
   function handlePassword (password) {
     setPassword(password)
+  }
+
+  function forgetPassword () {
+    navigation.navigate("ResetPassword")
   }
 
   if(user.loading) return (

@@ -57,9 +57,33 @@ const login = (data) => {
   }
 }
 
+const resetPassword = (data) => {
+  return (dispatch) => {
+    dispatch(setLoading(true))
+    console.log(data)
+    axios({
+      method: 'POST',
+      url: 'http://127.0.0.1:3000/employee/resetPassword',
+      data
+    })
+      .then(({ data }) => {
+        console.log(data)
+      })
+      .catch(err => {
+        console.log('INI ERRORRR')
+        console.log(err)
+        dispatch(setError(err))
+      })
+      .finally(() => {
+        dispatch(setLoading(false))
+      })
+  }
+}
+
 export default {
   login,
   setUser,
   setPassword,
-  setEmail
+  setEmail,
+  resetPassword
 }
