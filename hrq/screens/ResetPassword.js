@@ -23,33 +23,8 @@ export default function ResetPassword() {
             email,
             password
         }))
-
-        // dispatch(allAction.user.forgetPassword({
-        //     email,
-        //     password
-        // }))
     }
-
-    // const storeData = async (user) => {
-    //     try {
-    //       console.log(user, '==========store data================')
-    //       await AsyncStorage.setItem('userStorage', JSON.stringify(user))
-    //       navigation.navigate('Root')
-    //     } catch (error) {
-    //       console.log(error)
-    //     }
-    //   }
-
-    // if(user.loading) return (
-    //     <View>
-    //       <Text>Loading</Text>
-    //     </View>
-    // )
-    // if (user.error) return (
-    //     <View>
-    //       <Text>Loading</Text>
-    //     </View>
-    // )
+    
     if (user.resetPassword) navigation.navigate("Login")
     return(
         <View style={styles.container}>
