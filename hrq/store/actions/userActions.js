@@ -9,23 +9,10 @@ const setUser = (user) => {
   }
 }
 
-const setEmail = (email) => {
+const setLoading = (data) => {
   return {
-    type: 'SET_EMAIL',
-    payload: email,
-  }
-}
-
-const setPassword = (password) => {
-  return {
-    type: 'SET_PASSWORD',
-    payload: password
-  }
-}
-
-const setLoading = () => {
-  return {
-    type: 'SET_LOADING'
+    type: 'SET_LOADING',
+    payload: data
   }
 }
 
@@ -45,8 +32,6 @@ const setResetPassword = (value) => {
 
 const login = (data) => {
   return (dispatch) => {
-    dispatch(setLoading())
-    console.log('masok function')
     axios({
       method: 'post',
       url: 'http://127.0.0.1:3000/employee/login',
@@ -56,12 +41,11 @@ const login = (data) => {
       .then(({ data }) => {
         console.log(data, '===succsess')
         dispatch(setUser(data))
-        dispatch(setLoading())
+        dispatch(setLogin(true))
       })
       .catch(err => {
-        console.log(err)
-        dispatch(setError(err))
-        dispatch(setLoading())
+        console.log(err.response.data.message)
+        dispatch(setError(err.response.data.message))
       })
   }
 }
@@ -87,6 +71,43 @@ const resetPassword = (data) => {
       .finally(() => {
         dispatch(setLoading(false))
       })
+    }
+  }
+      
+      
+const absent = (data) => {
+  return (dispatch) => {
+    dispatch(setLoading(true))
+    axios({
+      method: 'post',
+      url: 'http://127.0.0.1:3000/employee/sendQR',
+      data,
+      headers: {
+        token: data.token
+      }
+    })
+    .then(({ data }) => {
+      dispatch(setAbsent(data))
+      dispatch(setLoading(false))
+    })
+    .catch(err => {
+      dispatch(setError(err))
+      dispatch(setLoading(false))
+    })
+  }
+}
+
+const setAbsent = (status) => {
+  return {
+    type: 'SET_ABSENT',
+    payload: status
+  }
+}
+
+const setLogin = (status) => {
+  return {
+    type: 'SET_LOGIN',
+    payload: status
   }
 }
 
@@ -95,5 +116,9 @@ export default {
   setUser,
   setPassword,
   setEmail,
-  resetPassword
+  resetPassword,
+  absent,
+  setLoading,
+  setError,
+  setLogin
 }

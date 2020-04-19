@@ -32,11 +32,18 @@ export default function App() {
             />
             <Stack.Screen
               name="Root"
+<<<<<<< HEAD
               component={BottomTabNavigator} 
             />
             <Stack.Screen
               name="ResetPassword"
               component={ResetPassword} 
+=======
+              component={BottomTabNavigator}
+              options={{
+                headerShown: false,
+              }}  
+>>>>>>> 498082225dd8e02ef8e5ffaaaa4440304022d902
             />
           </Stack.Navigator>
         </NavigationContainer>
