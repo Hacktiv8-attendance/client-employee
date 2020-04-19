@@ -30,8 +30,12 @@ export default function App() {
               }}
             />
             <Stack.Screen
-            name="Root"
-            component={BottomTabNavigator} />
+              name="Root"
+              component={BottomTabNavigator}
+              options={{
+                headerShown: false,
+              }}  
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </View>
