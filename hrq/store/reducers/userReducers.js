@@ -6,10 +6,12 @@ const initialReducers = {
     name: '',
   },
   token: '',
+  absences: null,
   login: {
     email: '',
     password: '',
   },
+  statusAbsence: '',
   successLogin: false,
   loading: false,
   error: null,
@@ -28,6 +30,10 @@ export default function userReducers (state = initialReducers, action) {
     case 'SET_ERROR':
       console.log('masuk root set ERROR')
       return {...state, error: action.payload}
+    case "SET_STATUS_ABSENCE":
+      return {...state, statusAbsence: action.payload}
+    case 'SET_ABSENCES':
+      return {...state, absences: action.payload}
     default:
       console.log('masuk default')
       return state;
