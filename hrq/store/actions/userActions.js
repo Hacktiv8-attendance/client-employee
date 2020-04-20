@@ -187,7 +187,7 @@ const fetchAbsence = ({ id, token }) => {
     dispatch(setLoading(true))
     axios({
       method: 'get',
-      url: `http://127.0.0.1:3000/employee/absence/${id}`,
+      url: `http://127.0.0.1:3000/employee/absence/`,
       headers: {
         token
       }
@@ -198,7 +198,7 @@ const fetchAbsence = ({ id, token }) => {
       dispatch(setLoading(false))
     })
     .catch(err => {
-      console.log(err.response.data.message)
+      console.log(err.response.data)
       dispatch(setError(err.response.data.message))
       dispatch(setLoading(false))
     }) 

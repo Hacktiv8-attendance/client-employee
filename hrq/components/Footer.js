@@ -7,7 +7,6 @@ export default function Footer () {
   const navigation = useNavigation()
 
   function handleTouch () {
-    console.log(('masuk'))
     navigation.navigate('scan')
   }
 
@@ -31,6 +30,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#11999e',
     paddingBottom: 20,
     paddingTop: 5,
+    borderTopWidth: 5,
+    borderColor: '#30e3ca'
   },
   logo: {
     backgroundColor: '#30e3ca',
@@ -38,6 +39,6 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingTop: 5,
     paddingBottom: 5,
-    marginTop: -35
+    marginTop: -39
   },
 })

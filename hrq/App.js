@@ -13,6 +13,7 @@ import CheckingEmail from './screens/CheckingEmail';
 import rootReducers from './store/reducers/rootReducers';
 import TabBarIcon from './components/TabBarIcon';
 import DrawerSideNavigator from './navigation/DrawerSideNavigator';
+import ProfileScreen from './screens/ProfileScreen';
 
 
 const Stack = createStackNavigator();
@@ -51,6 +52,13 @@ export default function App() {
             <Stack.Screen
               name="ResetPassword"
               component={ResetPassword}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="ProfileScreen"
+              component={ProfileScreen}
               options={{
                 headerShown: false,
               }}

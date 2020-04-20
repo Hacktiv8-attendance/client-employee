@@ -48,12 +48,19 @@ export default function HomeScreen () {
   if(user.loading) return (
     <View style={styles.container}>
       <View style={styles.statusBar} />
+
+      <Header
+        title="Absence Monthly"
+      />
+
       <View style={styles.containerLoading}>
         <ActivityIndicator
           size='large'
           color='#11999e'
         />
       </View>
+
+      <Footer />
     </View>
   )
 
@@ -69,7 +76,9 @@ export default function HomeScreen () {
     <View style={styles.container}>
       <View style={styles.statusBar}/>
 
-      <Header />
+      <Header
+        title="Scan Absence"
+      />
 
       <View style={styles.containerBody}>
         <View style={styles.containerProfile}>
@@ -124,6 +133,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#e4f9f5',
+    justifyContent: 'center'
   },
   containerProfile: {
     padding: 10,

@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import Constant from 'expo-constants';
 import allAction from '../store/actions';
 import ListAbsence from '../components/ListAbsence';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 export default function History () {
   const dispatch = useDispatch()
@@ -17,28 +19,37 @@ export default function History () {
   if (user.loading) return (
     <View style={styles.container}>
       <View style={styles.statusBar} />
+
+      <Header
+        title="Absence Monthly"
+      />
+
       <View style={styles.containerLoading}>
         <ActivityIndicator
           size='large'
           color='#11999e'
         />
       </View>
+
+      <Footer />
     </View>
   )
-  console.log(user.absences)
   return (
     <View style={styles.container}>
       <View style={styles.statusBar}/>
 
-      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-        <View>
-          <Text style={styles.textHeader}>Absence Monthly:</Text>
-        </View>
+      <Header
+        title="Absence Monthly"
+      />
+
+      <ScrollView style={[styles.container, {marginTop: 20}]} contentContainerStyle={styles.contentContainer}>
 
         <View>
           {user.absences && user.absences.map((absence, i) => <ListAbsence key={absence.id} absence={absence} no={i}/>)}
         </View>
       </ScrollView>
+
+      <Footer />
     </View>
   )
 }
@@ -59,7 +70,8 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   contentContainer: {
-    padding: 30
+    padding: 30,
+    paddingTop:0
   },
   statusBar: {
     height: Constant.statusBarHeight,

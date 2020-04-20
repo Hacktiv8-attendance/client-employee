@@ -19,7 +19,7 @@ export default function ClaimCutiScreen ({ navigation }) {
   const [btnLoading, setBtnLoading] = useState(false);
 
   function handleButton () {
-    // setBtnLoading(true);
+    setBtnLoading(true);
     let now = moment(start)
     let end = moment(finish)
     let duration = moment.duration(end.diff(now))
@@ -29,27 +29,25 @@ export default function ClaimCutiScreen ({ navigation }) {
 
   if (user.statusPaidLeave) {
     setTimeout(() => {
-      dispatch(allAction.user.setStatusPaidLeave(''))
-    }, 3000)
-    setTimeout(() => {
       console.log('masuk')
       setBtnLoading(false)
       setReason('')
       setStart(new Date())
       setFinish(new Date())
-    }, 1000)
+      dispatch(allAction.user.setStatusPaidLeave(''))
+    }, 2000)
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.statusBar}/>
 
-      <Header />
+      <Header
+        title='Form Paid Leave'
+      />
 
       <ScrollView>
         <View style={styles.containerBody}>
-          <Text style={styles.textHeader}>Form Paid Leave</Text>
-
           <Text>Remaining Paid Leave : {user.payload.paidLeave}</Text>
 
           {user.statusPaidLeave ? <Text style={styles.statusText}>{user.statusPaidLeave}</Text> : <Text style={styles.hiddenText}>test</Text>}
@@ -131,17 +129,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#e4f9f5',
+    justifyContent: 'center'
   },
   containerBody: {
     flex: 1,
-    padding: 30
+    padding: 30,
+    paddingTop: 20
   },
   buttonText: {
     textAlign: 'center',
     color: '#e4f9f5'
   },
   containerInput: {
-    paddingTop: 20
+    // paddingTop: 20
   },
   statusBar: {
     height: Constant.statusBarHeight,
@@ -168,16 +168,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#11999e',
   },
   hiddenText: {
-    marginLeft: 30,
     marginBottom: 10,
-    fontSize: 10,
+    fontSize: 12,
     color: '#e4f9f5'
   },
   statusText: {
     marginBottom: 10,
-    fontSize: 10,
+    fontSize: 12,
     fontWeight: 'bold',
-    textAlign: 'center'
   },
   inputDate: {
     borderWidth: 1,

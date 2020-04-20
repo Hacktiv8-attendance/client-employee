@@ -1,11 +1,24 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import moment from 'moment';
 
 export default function ListAbsence ({ absence, no }) {
   console.log('===============================', absence, '============================')
   return (
-    <View>
-      <Text>{no + 1}. Work Started: {absence.in.split('T')[0]}, Work Finished: {absence.out.split('T')[0]}</Text>
+    <View style={styles.container}>
+        <Text style={styles.textDate}>Date: {absence.in.split('T')[0]}</Text>
+        
+        <View style={styles.data}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <Text style={styles.text}>Start : {moment(absence.in).format('LT')}</Text>
+            <Text style={styles.text}>Work Time : {absence.worktime} Hour's</Text>
+          </View>
+          
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <Text style={styles.text}>Finish : {moment(absence.out).format('LT')}</Text>
+            <Text style={styles.text}>Status : {absence.status ? 'Worked' : 'Absent'}</Text>
+          </View>
+        </View>
     </View>
   )
 }
@@ -13,6 +26,26 @@ export default function ListAbsence ({ absence, no }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#e4f9f5',
+    marginBottom: 30
   },
+  text: {
+    color: '#e4f9f5'
+  },
+  textDate: {
+    padding: 10,
+    borderRadius: 45,
+    backgroundColor: '#30e3ca',
+    marginBottom: -20,
+    zIndex: 1,
+    color: '#11999e',
+  },
+  data: {
+    paddingTop: 30,
+    paddingBottom: 30,
+    paddingLeft: 10,
+    paddingRight: 10,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    backgroundColor: '#11999e',
+  }
 })

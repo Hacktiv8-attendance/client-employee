@@ -1,10 +1,12 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import Link from '../screens/LinksScreen';
 import Cuti from '../screens/ClaimCutiScreen';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import Logout from '../components/Logout';
+import History from '../screens/History';
+import ProfileScreen from '../screens/ProfileScreen';
+import InboxScreen from '../screens/InboxScreen';
 
 export default function DrawerSideNavigator () {
   const Drawer = createDrawerNavigator()
@@ -22,15 +24,21 @@ export default function DrawerSideNavigator () {
         ),
       }} />
 
-      <Drawer.Screen name='link' component={Link} options={{
+      <Drawer.Screen name='history' component={History} options={{
         drawerIcon: ({ focused }) => (
           <TabBarIcon focused={focused} name="ios-bookmarks" />
         )
       }} />
 
+      <Drawer.Screen name='inbox' component={InboxScreen} options={{
+        drawerIcon: ({ focused }) => (
+          <TabBarIcon focused={focused} name="ios-mail" />
+        )
+      }} />
+
       <Drawer.Screen  name='logout' component={Logout} options={{
         drawerIcon: ({ focused }) => (
-          <TabBarIcon focused={focused} name="ios-bookmarks" />
+          <TabBarIcon focused={focused} name="ios-power" />
         )
       }} />
     </Drawer.Navigator>
