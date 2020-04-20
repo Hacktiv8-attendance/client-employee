@@ -5,29 +5,19 @@ import { useNavigation } from '@react-navigation/native'
 import TabBarIcon from './TabBarIcon';
 
 
-export default function Header ({title}) {
+export default function BackHeader ({title}) {
   const user = useSelector(state => state.user)
   const navigation = useNavigation()
 
   return (
     <View style={styles.container}>
       <View style={{flexDirection: 'row'}}>
-        <TouchableOpacity onPress={() => navigation.openDrawer()}>
-          <TabBarIcon name="ios-list"/>
-        </TouchableOpacity>
-        {title && <Text style={styles.title}>{title}</Text>}
-      </View>
-
-      <View>
-        <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen')}>
-          <Image
-            style={styles.containerImage}
-            source={{
-              uri: user.payload.image_url
-            }}
-          />
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TabBarIcon name="ios-arrow-back"/>
         </TouchableOpacity>
       </View>
+      
+      {title && <Text style={styles.title}>{title}</Text>}
     </View>
   )
 }
