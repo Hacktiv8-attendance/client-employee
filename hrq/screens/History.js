@@ -43,7 +43,6 @@ export default function History () {
       />
 
       <ScrollView style={[styles.container, {marginTop: 20}]} contentContainerStyle={styles.contentContainer}>
-
         <View>
           {user.absences && user.absences.map((absence, i) => <ListAbsence key={absence.id} absence={absence} no={i}/>)}
         </View>

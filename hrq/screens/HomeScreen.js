@@ -50,7 +50,7 @@ export default function HomeScreen () {
       <View style={styles.statusBar} />
 
       <Header
-        title="Absence Monthly"
+        title="Scan Absence"
       />
 
       <View style={styles.containerLoading}>
