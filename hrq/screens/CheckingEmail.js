@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { StyleSheet,View, Text, Image, TextInput, TouchableOpacity, AsyncStorage } from 'react-native';
 import Constant from 'expo-constants';
@@ -6,62 +6,48 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native'
 import allAction from '../store/actions';
 
-export default function ResetPassword() {
+export default function CheckingEmail() {
     const navigation = useNavigation()
     const dispatch = useDispatch()
-    const [password, setPassword] = useState('')
-    const [passwordConfirmation, setPasswordConfirmation] = useState('')
+    const [email, setEmail] = useState('')
     let user = useSelector(state => state.user)
-    let email = user.emailReset
-    
 
-    function resetPasswordButton () {
-      if(password === passwordConfirmation) {
-        if(password.length < 6) {
-          dispatch(allAction.user.setError('password length must be greater than 6'))
-        } else {
-          dispatch(allAction.user.resetPassword({
-              email,
-              password
-          }))
-        }
-      } else {
-        dispatch(allAction.user.setError('confirmation password rejected'))
-      }
+    function checkEmail () {
+        console.log({
+            email
+        })
+        dispatch(allAction.user.findEmail({
+            email
+        }))
     }
 
     function back () {
-      navigation.navigate("Login")
+        navigation.navigate("Login")
     }
     
     if (user.resetPassword) navigation.navigate("Login")
+    if (user.emailReset) navigation.navigate("ResetPassword")
     return(
         <View style={styles.container}>
+            
+          {/* <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}> */}
             <View>
-              <Text style={styles.textHeader}>Reset Password</Text>
+              <Text style={styles.textHeader}>Check Email</Text>
+              <Text style={styles.subHeader}>We need to check your data first</Text>
+
             </View>
 
             {user.error && <Text style={styles.textError}>{user.error}</Text> }
 
             <View>
-              <Text style={styles.textLabel}>Password: </Text>
+              <Text style={styles.textLabel}>Email: </Text>
     
               <TextInput
-                value={password}
-                onChangeText={password => setPassword(password)}
-                placeholder='password'
-                textContentType="password"
-                secureTextEntry={true}
-                style={styles.input}
-              />
-    
-              <Text style={styles.textLabel}>Confirmation Password: </Text>
-              <TextInput
-                value={passwordConfirmation}
-                onChangeText={passwordConfirmation => setPasswordConfirmation(passwordConfirmation)}
-                placeholder='confirmation password'
-                textContentType="password"
-                secureTextEntry={true}
+                value={email}
+                onChangeText={email => setEmail(email)}
+                placeholder='example@example.com'
+                keyboardType="email-address"
+                textContentType="emailAddress"
                 style={styles.input}
               />
     
@@ -70,12 +56,11 @@ export default function ResetPassword() {
             <View>
               <TouchableOpacity 
                 style={styles.button}
-                onPress={resetPasswordButton}
+                onPress={checkEmail}
               >
                 <Text style={styles.buttonText}>Confirm</Text>
               </TouchableOpacity>
             </View>
-
 
             <View>
               <TouchableOpacity 
@@ -85,6 +70,8 @@ export default function ResetPassword() {
                 <Text style={styles.buttonText}>Back</Text>
               </TouchableOpacity>
             </View>
+
+          {/* </ScrollView> */}
         </View>
       );
 }
@@ -113,8 +100,7 @@ const styles = StyleSheet.create({
     textHeader: {
       textAlign: 'center',
       fontWeight: 'bold',
-      fontSize: 30,
-      marginBottom: 40
+      fontSize: 30
     },
     buttonText: {
       textAlign: 'center',
@@ -165,7 +151,11 @@ const styles = StyleSheet.create({
       shadowRadius: 20,
       marginLeft: 30,
       marginRight: 30,
-      margin: 5
+      margin: 6
+    },
+    subHeader: {
+        textAlign: "center",
+              marginBottom: 40
     },
     textError: {
       color: '#FF6D4E',

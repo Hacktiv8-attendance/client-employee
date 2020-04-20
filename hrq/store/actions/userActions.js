@@ -28,6 +28,13 @@ const setResetPassword = (value) => {
   }
 }
 
+const setEmailReset = (value) => {
+  return {
+    type: 'SET_EMAIL_RESET',
+    payload: value
+  }
+}
+
 const resetPassword = (data) => {
   return (dispatch) => {
     dispatch(setLoading(true))
@@ -43,8 +50,32 @@ const resetPassword = (data) => {
       })
       .catch(err => {
         console.log('INI ERRORRR')
-        console.log(err.name)
-        dispatch(setError(err))
+        console.log(err.response)
+        dispatch(setError('Email not Found'))
+      })
+      .finally(() => {
+        dispatch(setLoading(false))
+      })
+    }
+  }
+
+
+const findEmail = (data) => {
+  return (dispatch) => {
+    dispatch(setLoading(true))
+    axios({
+      method: 'POST',
+      url: 'http://127.0.0.1:3000/employee/findEmail',
+      data
+    })
+      .then(({ data }) => {
+        console.log(data.email)
+        dispatch(setEmailReset(data.email))
+      })
+      .catch(err => {
+        console.log('INI ERRORRR')
+        console.log(err.response)
+        dispatch(setError('Email not Found'))
       })
       .finally(() => {
         dispatch(setLoading(false))
@@ -148,5 +179,7 @@ export default {
   setLogin,
   fetchAbsence,
   resetPassword,
-  setResetPassword
+  setResetPassword,
+  setEmailReset,
+  findEmail
 }

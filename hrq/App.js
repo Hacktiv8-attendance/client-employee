@@ -9,6 +9,7 @@ import thunk from 'redux-thunk';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 import LoginScreen from './screens/LandingScreen';
 import ResetPassword from './screens/ResetPassword';
+import CheckingEmail from './screens/CheckingEmail';
 import rootReducers from './store/reducers/rootReducers';
 import TabBarIcon from './components/TabBarIcon';
 import DrawerSideNavigator from './navigation/DrawerSideNavigator';
@@ -36,6 +37,13 @@ export default function App() {
             <Stack.Screen
               name="Root"
               component={BottomTabNavigator}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="CheckingEmail"
+              component={CheckingEmail}
               options={{
                 headerShown: false,
               }}
