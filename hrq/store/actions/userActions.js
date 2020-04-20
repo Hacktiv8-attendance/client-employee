@@ -21,6 +21,38 @@ const setError = (error) => {
   }
 }
 
+const setResetPassword = (value) => {
+  return {
+    type: 'SET_RESET_PASSWORD',
+    payload: value
+  }
+}
+
+const resetPassword = (data) => {
+  return (dispatch) => {
+    dispatch(setLoading(true))
+    console.log(data)
+    axios({
+      method: 'POST',
+      url: 'http://127.0.0.1:3000/employee/resetPassword',
+      data
+    })
+      .then(({ data }) => {
+        console.log(data)
+        dispatch(setResetPassword(true))
+      })
+      .catch(err => {
+        console.log('INI ERRORRR')
+        console.log(err.name)
+        dispatch(setError(err))
+      })
+      .finally(() => {
+        dispatch(setLoading(false))
+      })
+    }
+  }
+     
+
 const login = (data) => {
   return (dispatch) => {
     axios({
@@ -114,5 +146,7 @@ export default {
   setLoading,
   setError,
   setLogin,
-  fetchAbsence
+  fetchAbsence,
+  resetPassword,
+  setResetPassword
 }

@@ -18,7 +18,10 @@ export default function LandingScreen () {
   const [btnLoading, setBtnLoading] = useState(false)
 
   const linkForgotPassword = (
-    <Text style={styles.textHelpLink}>Click here.</Text>
+    <Text 
+      style={styles.textHelpLink}
+      onPress={forgetPassword}
+    >Click here.</Text>
   )
 
   const retrieveData = async () => {
@@ -39,6 +42,7 @@ export default function LandingScreen () {
   }
 
   useEffect (() => {
+    dispatch(allAction.user.setResetPassword(false))
     dispatch(allAction.user.setLoading(true))
     retrieveData()
   }, [])
@@ -47,6 +51,10 @@ export default function LandingScreen () {
     console.log('masuk')
     setBtnLoading(true)
     dispatch(allAction.user.login({email, password}))
+  }
+
+  function forgetPassword () {
+    navigation.navigate("ResetPassword")
   }
 
   if (user.successLogin) {
