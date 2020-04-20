@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { compose, applyMiddleware, createStore } from 'redux';
@@ -10,6 +10,9 @@ import BottomTabNavigator from './navigation/BottomTabNavigator';
 import LoginScreen from './screens/LandingScreen';
 import ResetPassword from './screens/ResetPassword'
 import rootReducers from './store/reducers/rootReducers';
+import TabBarIcon from './components/TabBarIcon';
+import DrawerSideNavigator from './navigation/DrawerSideNavigator';
+
 
 const Stack = createStackNavigator();
 const store = createStore(rootReducers, compose(
@@ -42,8 +45,12 @@ export default function App() {
               component={BottomTabNavigator}
               options={{
                 headerShown: false,
+<<<<<<< HEAD
               }}  
 >>>>>>> 498082225dd8e02ef8e5ffaaaa4440304022d902
+=======
+              }}
+>>>>>>> 6b6b806e1d5964467c2e9c36fd001d6feb4162ab
             />
           </Stack.Navigator>
         </NavigationContainer>

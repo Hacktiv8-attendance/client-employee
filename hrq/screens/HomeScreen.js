@@ -9,13 +9,13 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import Constant from 'expo-constants';
 import moment from 'moment';
 import allAction from '../store/actions';
+import Header from '../components/Header';
 
 
 export default function HomeScreen () {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [clock, setClock] = useState(moment(new Date()).format("dddd, MMMM Do YYYY, HH:mm:ss"));
-  const [runClock, setRunClock] = useState(false)
   const user = useSelector(state => state.user)
   const dispatch = useDispatch()
   const navigation = useNavigation()
@@ -27,12 +27,6 @@ export default function HomeScreen () {
     } catch (error) {
       console.log(error)
     }
-  }
-
-  if (runClock) {
-    setInterval(() => {
-      setClock(moment(new Date()).format("dddd, MMMM Do YYYY, HH:mm:ss"))
-    }, 1000)
   }
 
   const handleBarCodeScanned = ({ type, data }) => {
@@ -49,16 +43,18 @@ export default function HomeScreen () {
     setTimeout(() => {
       dispatch(allAction.user.setLoading(false))
       storeData({ token: user.token, payload: user.payload})
-      setRunClock(true)
     }, 500)
   }, []);
 
   if(user.loading) return (
-    <View style={styles.containerLoading}>
-      <ActivityIndicator
-        size='large'
-        color='#11999e'
-      />
+    <View style={styles.container}>
+      <View style={styles.statusBar} />
+      <View style={styles.containerLoading}>
+        <ActivityIndicator
+          size='large'
+          color='#11999e'
+        />
+      </View>
     </View>
   )
 
@@ -72,7 +68,10 @@ export default function HomeScreen () {
 
   return (
     <View style={styles.container}>
+      <View style={styles.statusBar}/>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+        {/* <Header/> */}
+
         <View style={styles.containerProfile}>
           <View style={{marginRight: 15}}>
             <Image
@@ -85,11 +84,11 @@ export default function HomeScreen () {
           <View>
             <Text>Name : {user.payload.name}</Text>
             
-            <Text>{clock.substr(0, (clock.length - 10))}, {clock.substr(-8, 8)}</Text>
+            <Text>{clock.substr(0, (clock.length - 10))}</Text>
           </View>
         </View>
         
-        <Camera
+        {/* <Camera
           style={styles.camera}
           barCodeScannerSettings={{
             barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
@@ -98,7 +97,7 @@ export default function HomeScreen () {
           >
           <View>
           </View>
-        </Camera>
+        </Camera> */}
 
         <View
           style={{
@@ -118,7 +117,6 @@ export default function HomeScreen () {
               email: '',
               authLevel: 0,
             }}))
-            setRunClock(false)
             navigation.navigate('Login')
           }}
           title="logout"
@@ -140,10 +138,13 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     marginTop: 30
   },
+  statusBar: {
+    height: Constant.statusBarHeight,
+    backgroundColor: '#11999e'
+  },
   container: {
     flex: 1,
     backgroundColor: '#e4f9f5',
-    marginTop: Constant.statusBarHeight
   },
   containerProfile: {
     flex: 1,
@@ -151,8 +152,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   contentContainer: {
-    marginLeft: 30,
-    marginRight: 30,
+    padding: 30
   },
 <<<<<<< HEAD
 })

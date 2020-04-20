@@ -61,6 +61,7 @@ export default function LandingScreen () {
     setPassword('')
   }
 
+<<<<<<< HEAD
   function handleEmail (email) {
     setEmail(email)
   }
@@ -78,13 +79,15 @@ export default function LandingScreen () {
     <View>
       <Text>Loading</Text>
 =======
+=======
+>>>>>>> 6b6b806e1d5964467c2e9c36fd001d6feb4162ab
   if (user.error) {
     setTimeout(() => {
       dispatch(allAction.user.setError(null))
     }, 5000)
     setTimeout(() => {
       setBtnLoading(false)
-    })
+    }, 1000)
   }
 
   if (user.loading) return (
@@ -122,7 +125,7 @@ export default function LandingScreen () {
 
               <TextInput
                 value={email}
-                onChangeText={email => handleEmail(email)}
+                onChangeText={email => setEmail(email)}
                 placeholder='example@example.com'
                 keyboardType="email-address"
                 textContentType="emailAddress"
@@ -133,7 +136,7 @@ export default function LandingScreen () {
 
               <TextInput
                 value={password}
-                onChangeText={password => handlePassword(password)}
+                onChangeText={password => setPassword(password)}
                 placeholder='password'
                 textContentType="password"
                 secureTextEntry={true}
@@ -240,16 +243,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   button: {
-    display: 'flex',
     height: 50,
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#11999e',
-    shadowColor: '#11999e',
-    shadowOpacity: 0.4,
-    shadowOffset: { height: 10, width: 0 },
-    shadowRadius: 20,
     marginLeft: 30,
     marginRight: 30
   }
