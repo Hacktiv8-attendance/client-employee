@@ -111,6 +111,40 @@ const login = (data) => {
   }
 }
 
+const setStatusPaidLeave = (status) => {
+  return {
+    type: 'SET_STATUS_PAID_LEAVE',
+    payload: status
+  }
+}
+
+const requestPaidLeave = (data) => {
+  console.log(data)
+  const { SuperiorId, reason, leaveDate, duration, token } = data
+  return (dispatch) => {
+    axios({
+      method: 'post',
+      url: 'http://127.0.0.1:3000/employee/paidLeave',
+      data: {
+        SuperiorId,
+        reason,
+        leaveDate,
+        duration
+      },
+      headers: {
+        token
+      }
+    })
+      .then(_ => {
+        dispatch(setStatusPaidLeave('Request has been send'))
+      })
+      .catch(err => {
+        console.log(err.response.data)
+        dispatch(setStatusPaidLeave('Request cannot be process, please contact your superior'))
+      })
+  }
+}
+
 const absent = (data) => {
   const { token, EmployeeId, jwt, latitude, longitude } = data
   return (dispatch) => {
@@ -197,5 +231,7 @@ export default {
   setResetPassword,
   setEmailReset,
   findEmail,
-  setLocation
+  setLocation,
+  requestPaidLeave,
+  setStatusPaidLeave
 }

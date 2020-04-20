@@ -19,8 +19,6 @@ export default function LandingScreen () {
   const [btnLoading, setBtnLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
 
-  console.log(user)
-
   const linkForgotPassword = (
     <Text 
       style={styles.textHelpLink}

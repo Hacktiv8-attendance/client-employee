@@ -12,6 +12,7 @@ const initialReducers = {
     password: '',
   },
   statusAbsence: '',
+  statusPaidLeave: '',
   successLogin: false,
   loading: false,
   location: null,
@@ -28,6 +29,9 @@ export default function userReducers (state = initialReducers, action) {
     case 'SET_LOADING':
       console.log('masuk root set Loading')
       return {...state, loading: action.payload}
+    case 'SET_STATUS_PAID_LEAVE':
+      console.log('masuk root set paid leave')
+      return {...state, statusPaidLeave: action.payload}
     case 'SET_LOGIN':
       return {...state, successLogin: action.payload}
     case 'SET_LOCATION':
