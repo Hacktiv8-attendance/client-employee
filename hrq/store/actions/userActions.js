@@ -102,12 +102,12 @@ const findEmail = (data) => {
     dispatch(setLoading(true))
     axios({
       method: 'POST',
-      url: 'http://127.0.0.1:3000/employee/findEmail',
+      url: 'http://127.0.0.1:3000/employee/requestCode',
       data
     })
       .then(({ data }) => {
-        console.log(data.email)
-        dispatch(setEmailReset(data.email))
+        console.log('MASUK SINIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII')
+        dispatch({type: "SET_RESET_CODE", payload: data.code})
       })
       .catch(err => {
         console.log('INI ERRORRR')
@@ -181,7 +181,6 @@ const absent = (data) => {
     const locEmployee = { latitude, longitude }
     const locOffice = { latitude: -6.468127, longitude: 106.765711 }
     const distance = haversine(locEmployee, locOffice)
-    console.log(distance)
     axios({
       method: 'post',
       url: 'http://127.0.0.1:3000/employee/sendQR',
