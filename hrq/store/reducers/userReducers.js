@@ -18,7 +18,8 @@ const initialReducers = {
   location: null,
   error: null,
   resetPassword: false,
-  emailReset: ''
+  emailReset: '',
+  paidLeave: []
 }
 
 export default function userReducers (state = initialReducers, action) {
@@ -48,6 +49,8 @@ export default function userReducers (state = initialReducers, action) {
       return {...state, resetPassword: action.payload}
     case 'SET_EMAIL_RESET':
       return {...state, emailReset: action.payload}
+    case 'SET_PAIDLEAVE':
+      return {...state, paidLeave: action.payload}
     default:
       console.log('masuk default')
       return state;

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import haversine from 'haversine-distance';
+const serverUrl = 'http://localhost:3000'
 
 const setUser = (user) => {
   return {
@@ -49,7 +50,7 @@ const resetPassword = (data) => {
     console.log(data)
     axios({
       method: 'POST',
-      url: 'http://127.0.0.1:3000/employee/resetPassword',
+      url: `${serverUrl}/employee/resetPassword`,
       data
     })
       .then(({ data }) => {
@@ -73,7 +74,7 @@ const findEmail = (data) => {
     dispatch(setLoading(true))
     axios({
       method: 'POST',
-      url: 'http://127.0.0.1:3000/employee/findEmail',
+      url: `${serverUrl}/employee/findEmail`,
       data
     })
       .then(({ data }) => {
@@ -96,7 +97,7 @@ const login = (data) => {
   return (dispatch) => {
     axios({
       method: 'post',
-      url: 'http://127.0.0.1:3000/employee/login',
+      url: `${serverUrl}/employee/login`,
       data
     })
       .then(({ data }) => {
@@ -124,7 +125,7 @@ const requestPaidLeave = (data) => {
   return (dispatch) => {
     axios({
       method: 'post',
-      url: 'http://127.0.0.1:3000/employee/paidLeave',
+      url: `${serverUrl}/employee/paidLeave`,
       data: {
         SuperiorId,
         reason,
@@ -155,7 +156,7 @@ const absent = (data) => {
     console.log(distance)
     axios({
       method: 'post',
-      url: 'http://127.0.0.1:3000/employee/sendQR',
+      url: `${serverUrl}/employee/sendQR`,
       data: {
         EmployeeId,
         jwt
@@ -187,7 +188,7 @@ const fetchAbsence = ({ id, token }) => {
     dispatch(setLoading(true))
     axios({
       method: 'get',
-      url: `http://127.0.0.1:3000/employee/absence/${id}`,
+      url: `${serverUrl}/employee/absence/${id}`,
       headers: {
         token
       }
@@ -219,6 +220,62 @@ const setLogin = (status) => {
   }
 }
 
+const setPaidLeave = (payload) => {
+  return {
+    type: "SET_PAIDLEAVE",
+    payload
+  }
+}
+
+const fetchPaidLeave = ({ token }) => {
+  return (dispatch) => {
+    dispatch(setLoading(true))
+    axios({
+      method: "GET",
+      url: `${serverUrl}/employee/paidLeave`,
+      headers: {
+        token
+      }
+    })
+    .then(({ data }) => {
+      console.log(data)
+      dispatch(setPaidLeave(data))
+    })
+    .catch(err => {
+      console.log(err)
+      dispatch(setError(err.response.data.message))
+    })
+    .finally(() => dispatch(setLoading(false)))
+  }
+}
+
+const approvePaidLeave = ({ id, status, completed, token }) => {
+  return (dispatch) => {
+    dispatch(setLoading(true))
+    axios({
+      method: "PUT",
+      url: `${serverUrl}/employee/paidLeave/${id}`,
+      data: { 
+        status, 
+        completed 
+      },
+      headers: {
+        token
+      }
+    })
+      .then(({ data }) => {
+        console.log(data)
+      })
+      .catch(err => {
+        console.log(err)
+        dispatch(setError(err.response.data.message))
+      })
+      .finally(() => dispatch(setLoading(false)))
+  }
+}
+
+
+
 export default {
   login,
   setUser,
@@ -233,5 +290,8 @@ export default {
   findEmail,
   setLocation,
   requestPaidLeave,
-  setStatusPaidLeave
+  setStatusPaidLeave,
+  fetchPaidLeave,
+  approvePaidLeave,
+  setPaidLeave
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Link from '../screens/LinksScreen';
 import Cuti from '../screens/ClaimCutiScreen';
+import ApprovalScreen from '../screens/ApprovalScreen';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import Logout from '../components/Logout';
@@ -17,6 +18,12 @@ export default function DrawerSideNavigator () {
       }} />
 
       <Drawer.Screen name= 'cuti' component={Cuti} options={{
+        drawerIcon: ({ focused }) => (
+          <TabBarIcon focused={focused} name="ios-filing" />
+        ),
+      }} />
+
+      <Drawer.Screen name= 'Approval' component={ApprovalScreen} options={{
         drawerIcon: ({ focused }) => (
           <TabBarIcon focused={focused} name="ios-filing" />
         ),

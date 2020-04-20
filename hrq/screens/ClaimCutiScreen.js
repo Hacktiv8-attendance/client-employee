@@ -7,7 +7,6 @@ import Header from '../components/Header';
 import allAction from '../store/actions';
 import moment from 'moment';
 import Footer from '../components/Footer';
-// import DateTimePicker from '@react-native-community/datetimepicker';
 import DatePicker from 'react-native-datepicker'
 
 export default function ClaimCutiScreen ({ navigation }) {
