@@ -6,6 +6,7 @@ AsyncStorage, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard,
 ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Constant from 'expo-constants';
+import * as Location from 'expo-location';
 import allAction from '../store/actions';
 
 
@@ -15,7 +16,10 @@ export default function LandingScreen () {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [btnLoading, setBtnLoading] = useState(false)
+  const [btnLoading, setBtnLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null);
+
+  console.log(user)
 
   const linkForgotPassword = (
     <Text 
@@ -42,6 +46,14 @@ export default function LandingScreen () {
   }
 
   useEffect (() => {
+    (async () => {
+      let { status } = await Location.requestPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Please allow permission to access location');
+      }
+      let location = await Location.getCurrentPositionAsync({});
+      dispatch(allAction.user.setLocation(location));
+    })();
     dispatch(allAction.user.setEmailReset(''))
     dispatch(allAction.user.setResetPassword(false))
     dispatch(allAction.user.setLoading(true))
@@ -103,6 +115,8 @@ export default function LandingScreen () {
             <View>
               {user.error
               ? <Text style={styles.errorText}>{user.error}</Text>
+              : errorMsg
+              ? <Text style={styles.errorText}>{errorMsg}</Text>
               : <Text style={styles.hiddenText}>Error</Text>}
 
               <Text style={styles.textLabel}>Email: </Text>

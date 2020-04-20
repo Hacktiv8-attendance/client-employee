@@ -1,4 +1,5 @@
 import axios from 'axios';
+import haversine from 'haversine-distance';
 
 const setUser = (user) => {
   return {
@@ -25,6 +26,13 @@ const setResetPassword = (value) => {
   return {
     type: 'SET_RESET_PASSWORD',
     payload: value
+  }
+}
+
+const setLocation = (loc) => {
+  return {
+    type: 'SET_LOCATION',
+    payload: loc
   }
 }
 
@@ -89,8 +97,7 @@ const login = (data) => {
     axios({
       method: 'post',
       url: 'http://127.0.0.1:3000/employee/login',
-      data,
-
+      data
     })
       .then(({ data }) => {
         console.log(data, '===succsess')
@@ -105,14 +112,22 @@ const login = (data) => {
 }
 
 const absent = (data) => {
+  const { token, EmployeeId, jwt, latitude, longitude } = data
   return (dispatch) => {
     dispatch(setLoading(true))
+    const locEmployee = { latitude, longitude }
+    const locOffice = { latitude: -6.468127, longitude: 106.765711 }
+    const distance = haversine(locEmployee, locOffice)
+    console.log(distance)
     axios({
       method: 'post',
       url: 'http://127.0.0.1:3000/employee/sendQR',
-      data,
+      data: {
+        EmployeeId,
+        jwt
+      },
       headers: {
-        token: data.token
+        token
       }
     })
     .then(({ data }) => {
@@ -181,5 +196,6 @@ export default {
   resetPassword,
   setResetPassword,
   setEmailReset,
-  findEmail
+  findEmail,
+  setLocation
 }

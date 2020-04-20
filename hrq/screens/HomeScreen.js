@@ -32,7 +32,7 @@ export default function HomeScreen () {
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-    dispatch(allAction.user.absent({ jwt: data, EmployeeId: user.payload.id, token: user.token}))
+    dispatch(allAction.user.absent({ jwt: data, EmployeeId: user.payload.id, token: user.token, latitude: user.location.coords.latitude, longitude: user.location.coords.longitude}))
   };
 
   useEffect(() => {
