@@ -18,10 +18,7 @@ export default function LandingScreen () {
   const [btnLoading, setBtnLoading] = useState(false)
 
   const linkForgotPassword = (
-    <Text 
-      style={styles.textHelpLink}
-      onPress={forgetPassword}
-    >Click here.</Text>
+    <Text style={styles.textHelpLink}>Click here.</Text>
   )
 
   const retrieveData = async () => {
@@ -44,7 +41,6 @@ export default function LandingScreen () {
   useEffect (() => {
     dispatch(allAction.user.setLoading(true))
     retrieveData()
-    dispatch(allAction.user.resetPassword(false))
   }, [])
 
   const handleLogin = () => {
@@ -61,26 +57,6 @@ export default function LandingScreen () {
     setPassword('')
   }
 
-<<<<<<< HEAD
-  function handleEmail (email) {
-    setEmail(email)
-  }
-
-  function handlePassword (password) {
-    setPassword(password)
-  }
-
-<<<<<<< HEAD
-  function forgetPassword () {
-    navigation.navigate("ResetPassword")
-  }
-
-  if(user.loading) return (
-    <View>
-      <Text>Loading</Text>
-=======
-=======
->>>>>>> 6b6b806e1d5964467c2e9c36fd001d6feb4162ab
   if (user.error) {
     setTimeout(() => {
       dispatch(allAction.user.setError(null))
@@ -96,7 +72,6 @@ export default function LandingScreen () {
         size='large'
         color='#11999e'
       />
->>>>>>> 498082225dd8e02ef8e5ffaaaa4440304022d902
     </View>
   )
 

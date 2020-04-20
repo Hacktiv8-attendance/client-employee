@@ -154,9 +154,6 @@ const styles = StyleSheet.create({
   contentContainer: {
     padding: 30
   },
-<<<<<<< HEAD
-})
-=======
   containerLoading: {
     flex: 1,
     backgroundColor: '#e4f9f5',
@@ -164,4 +161,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   }
 })
->>>>>>> 498082225dd8e02ef8e5ffaaaa4440304022d902
