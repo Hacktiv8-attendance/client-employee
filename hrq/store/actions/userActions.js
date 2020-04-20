@@ -43,6 +43,35 @@ const setEmailReset = (value) => {
   }
 }
 
+const setBroadcast = (data) => {
+  return {
+    type: 'SET_BROADCAST',
+    payload: data
+  }
+}
+
+const fetchBroadcast = (token) => {
+  return (dispatch) => {
+    dispatch(setLoading(true))
+    axios({
+      method: 'get',
+      url: 'http://127.0.0.1:3000/employee/message',
+      headers: {
+        token
+      }
+    })
+      .then(({ data }) => {
+        dispatch(setBroadcast(data))
+        dispatch(setLoading(false))
+      })
+      .catch(err => {
+        console.log(err.response.data.message)
+        dispatch(setError(err.response.data.message))
+        dispatch(setLoading(false))
+      })
+  }
+}
+
 const resetPassword = (data) => {
   return (dispatch) => {
     dispatch(setLoading(true))
@@ -233,5 +262,6 @@ export default {
   findEmail,
   setLocation,
   requestPaidLeave,
-  setStatusPaidLeave
+  setStatusPaidLeave,
+  fetchBroadcast
 }

@@ -3,7 +3,6 @@ import { View, Text, StyleSheet } from 'react-native';
 import moment from 'moment';
 
 export default function ListAbsence ({ absence, no }) {
-  console.log('===============================', absence, '============================')
   return (
     <View style={styles.container}>
         <Text style={styles.textDate}>Date: {absence.in.split('T')[0]}</Text>
