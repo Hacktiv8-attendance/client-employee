@@ -2,14 +2,14 @@ import * as WebBrowser from 'expo-web-browser';
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, StyleSheet, Button, AsyncStorage, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { View, Text, StyleSheet, Button, AsyncStorage, ActivityIndicator } from 'react-native';
 import { Camera } from 'expo-camera';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import Constant from 'expo-constants';
 import moment from 'moment';
 import allAction from '../store/actions';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 
 export default function HomeScreen () {
@@ -18,7 +18,6 @@ export default function HomeScreen () {
   const [clock, setClock] = useState(moment(new Date()).format("dddd, MMMM Do YYYY, HH:mm:ss"));
   const user = useSelector(state => state.user)
   const dispatch = useDispatch()
-  const navigation = useNavigation()
 
   const storeData = async (user) => {
     try {
@@ -69,59 +68,38 @@ export default function HomeScreen () {
   return (
     <View style={styles.container}>
       <View style={styles.statusBar}/>
-      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-        {/* <Header/> */}
 
+      <Header />
+
+      <View style={styles.containerBody}>
         <View style={styles.containerProfile}>
-          <View style={{marginRight: 15}}>
-            <Image
-              style={styles.containerImage}
-              source={{
-                uri: user.payload.image_url
-              }}
-            />
-          </View>
           <View>
-            <Text>Name : {user.payload.name}</Text>
-            
-            <Text>{clock.substr(0, (clock.length - 10))}</Text>
+            <Text style={styles.textProfile}>Hi, {user.payload.name && user.payload.name.split(' ')[0]}</Text>
+
+            <Text style={styles.textProfile}>{clock.substr(0, (clock.length - 10))}</Text>
           </View>
         </View>
-        
-        {/* <Camera
+          
+        <Camera
           style={styles.camera}
           barCodeScannerSettings={{
             barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
           }}
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
           >
-          <View>
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: 'transparent'
+            }}>
+            {scanned && <Button title='Tap to Scan Again' onPress={() => setScanned(false)} />}
           </View>
-        </Camera> */}
-
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}>
-          {scanned && <Button title='Tap to Scan Again' onPress={() => setScanned(false)} />}
-        </View>
-
-        <Button
-          onPress={ async () => {
-            await AsyncStorage.removeItem('userStorage')
-            dispatch(allAction.user.setUser({token: '', payload: {
-              id: 0,
-              email: '',
-              authLevel: 0,
-            }}))
-            navigation.navigate('Login')
-          }}
-          title="logout"
-        />
-      </ScrollView>
+        </Camera>
+      </View>
+      
+      <Footer />
     </View>
   )
 }
@@ -133,26 +111,31 @@ const styles = StyleSheet.create({
     borderRadius:50
   },
   camera: {
-    flex: 1,
     height: 300,
-    marginBottom: 30,
-    marginTop: 30
+    margin: 30
+  },
+  containerBody: {
+    flex: 1
   },
   statusBar: {
     height: Constant.statusBarHeight,
-    backgroundColor: '#11999e'
+    backgroundColor: '#11999e',
   },
   container: {
     flex: 1,
     backgroundColor: '#e4f9f5',
   },
   containerProfile: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center'
+    padding: 10,
+    marginTop: 20,
+    alignItems: 'center',
+    backgroundColor: '#11999e',
+    borderRadius: 30,
+    marginLeft: 30,
+    marginRight: 30
   },
-  contentContainer: {
-    padding: 30
+  textProfile: {
+    color: '#e4f9f5',
   },
   containerLoading: {
     flex: 1,

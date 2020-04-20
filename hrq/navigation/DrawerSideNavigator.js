@@ -10,7 +10,7 @@ export default function DrawerSideNavigator () {
   const Drawer = createDrawerNavigator()
   return (
     <Drawer.Navigator drawerStyle={{backgroundColor: '#e4f9f5'}}>
-      <Drawer.Screen name= 'home' component={HomeScreen} options={{
+      <Drawer.Screen name= 'scan' component={HomeScreen} options={{
         drawerIcon: ({ focused }) => (
           <TabBarIcon focused={focused} name="md-qr-scanner" />
         ),
@@ -20,7 +20,6 @@ export default function DrawerSideNavigator () {
         drawerIcon: ({ focused }) => (
           <TabBarIcon focused={focused} name="ios-filing" />
         ),
-        gestureEnabled: false,
       }} />
 
       <Drawer.Screen name='link' component={Link} options={{
@@ -29,7 +28,7 @@ export default function DrawerSideNavigator () {
         )
       }} />
 
-      <Drawer.Screen name='logout' component={Logout} options={{
+      <Drawer.Screen  name='logout' component={Logout} options={{
         drawerIcon: ({ focused }) => (
           <TabBarIcon focused={focused} name="ios-bookmarks" />
         )

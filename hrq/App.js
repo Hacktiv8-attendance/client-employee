@@ -36,7 +36,7 @@ export default function App() {
             />
             <Stack.Screen
               name="Root"
-              component={BottomTabNavigator}
+              component={DrawerSideNavigator}
               options={{
                 headerShown: false,
               }}

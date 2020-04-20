@@ -18,12 +18,6 @@ export default function Header () {
       </View>
 
       <View>
-        <TouchableOpacity onPress={() => navigation.navigate('home')}>
-          <TabBarIcon name="md-qr-scanner"/>
-        </TouchableOpacity>
-      </View>
-
-      <View>
         <Image
           style={styles.containerImage}
           source={{
@@ -39,7 +33,10 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 20,
+    paddingRight: 30,
+    paddingLeft: 30
   },
   containerImage: {
     height: 30,
