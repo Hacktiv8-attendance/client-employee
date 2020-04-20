@@ -14,6 +14,7 @@ const initialReducers = {
   statusAbsence: '',
   successLogin: false,
   loading: false,
+  location: null,
   error: null,
   resetPassword: false,
   emailReset: ''
@@ -29,6 +30,9 @@ export default function userReducers (state = initialReducers, action) {
       return {...state, loading: action.payload}
     case 'SET_LOGIN':
       return {...state, successLogin: action.payload}
+    case 'SET_LOCATION':
+      console.log('setLocation', action.payload)
+      return {...state, location: action.payload}
     case 'SET_ERROR':
       console.log('masuk root set ERROR')
       return {...state, error: action.payload}
