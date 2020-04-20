@@ -15,7 +15,8 @@ const initialReducers = {
   successLogin: false,
   loading: false,
   error: null,
-  resetPassword: false 
+  resetPassword: false,
+  emailReset: ''
 }
 
 export default function userReducers (state = initialReducers, action) {
@@ -37,6 +38,8 @@ export default function userReducers (state = initialReducers, action) {
       return {...state, absences: action.payload}
     case 'SET_RESET_PASSWORD':
       return {...state, resetPassword: action.payload}
+    case 'SET_EMAIL_RESET':
+      return {...state, emailReset: action.payload}
     default:
       console.log('masuk default')
       return state;

@@ -42,6 +42,7 @@ export default function LandingScreen () {
   }
 
   useEffect (() => {
+    dispatch(allAction.user.setEmailReset(''))
     dispatch(allAction.user.setResetPassword(false))
     dispatch(allAction.user.setLoading(true))
     retrieveData()
@@ -54,7 +55,7 @@ export default function LandingScreen () {
   }
 
   function forgetPassword () {
-    navigation.navigate("ResetPassword")
+    navigation.navigate("CheckingEmail")
   }
 
   if (user.successLogin) {
