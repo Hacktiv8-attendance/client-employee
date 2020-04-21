@@ -20,6 +20,7 @@ export default function InboxScreen () {
   }
 
   const onRefresh = useCallback(() => {
+    console.log(user)
     console.log('masukkk')
     setRefreshing(true);
     dispatch(allAction.user.fetchAbsence({ id: user.payload.id, token: user.token }))
@@ -65,7 +66,7 @@ export default function InboxScreen () {
         }
       >
         <View>
-          <ListInbox/>
+          { user.broadcast && user.broadcast.map(message => <ListInbox key={message.id} message={message} />) }
         </View>
       </ScrollView>
 

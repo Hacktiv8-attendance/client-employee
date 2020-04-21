@@ -35,7 +35,7 @@ export default function History () {
       <View style={styles.statusBar} />
 
       <Header
-        title="Absence Monthly"
+        title="Monthly Absence"
       />
 
       <View style={styles.containerLoading}>
@@ -53,7 +53,7 @@ export default function History () {
       <View style={styles.statusBar}/>
 
       <Header
-        title="Absence Monthly"
+        title="Monthly Absence"
       />
 
       <ScrollView

@@ -3,7 +3,6 @@ import * as Permissions from 'expo-permissions';
 import { Notifications } from 'expo';
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
 import { View, Text, StyleSheet, Button, AsyncStorage, ActivityIndicator } from 'react-native';
 import { Camera } from 'expo-camera';
 import { BarCodeScanner } from 'expo-barcode-scanner';
@@ -21,7 +20,8 @@ export default function HomeScreen () {
   const user = useSelector(state => state.user)
   const dispatch = useDispatch()
 
-  const registerForPushNotificationsAsync = async () => {
+  const registerForPushNotificationsAsync =
+   async () => {
     const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
     let finalStatus = existingStatus;
     if (existingStatus !== 'granted') {
@@ -76,7 +76,7 @@ export default function HomeScreen () {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    alert(`Successfully record your timestamp`);
     dispatch(allAction.user.absent({ jwt: data, EmployeeId: user.payload.id, token: user.token, latitude: user.location.coords.latitude, longitude: user.location.coords.longitude}))
   };
 
@@ -97,7 +97,7 @@ export default function HomeScreen () {
       <View style={styles.statusBar} />
 
       <Header
-        title="Scan Absence"
+        title="Scan QR"
       />
 
       <View style={styles.containerLoading}>
@@ -124,7 +124,7 @@ export default function HomeScreen () {
       <View style={styles.statusBar}/>
 
       <Header
-        title="Scan Absence"
+        title="Scan QR"
       />
 
       <View style={styles.containerBody}>
