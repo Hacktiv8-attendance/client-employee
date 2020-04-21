@@ -1,12 +1,10 @@
 import React from 'react';
 import { View, TouchableOpacity, Image, StyleSheet, Text } from 'react-native';
-import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native'
 import TabBarIcon from './TabBarIcon';
 
 
 export default function BackHeader ({title}) {
-  const user = useSelector(state => state.user)
   const navigation = useNavigation()
 
   return (

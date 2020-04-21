@@ -7,7 +7,7 @@ export default function Footer () {
   const navigation = useNavigation()
 
   function handleTouch () {
-    navigation.navigate('scan')
+    navigation.navigate('Scan')
   }
 
   return (

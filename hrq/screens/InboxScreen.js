@@ -20,10 +20,8 @@ export default function InboxScreen () {
   }
 
   const onRefresh = useCallback(() => {
-    console.log(user)
-    console.log('masukkk')
     setRefreshing(true);
-    dispatch(allAction.user.fetchAbsence({ id: user.payload.id, token: user.token }))
+    dispatch(allAction.user.fetchBroadcast(user.token))
     wait(2000).then(() => setRefreshing(false));
   }, [refreshing]);
 

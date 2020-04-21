@@ -274,7 +274,7 @@ const fetchPaidLeave = ({ token }) => {
       dispatch(setPaidLeave(data))
     })
     .catch(err => {
-      console.log(err)
+      console.log(err.response.data)
       dispatch(setError(err.response.data.message))
     })
     .finally(() => dispatch(setLoading(false)))
@@ -299,7 +299,6 @@ const approvePaidLeave = ({ id, status, token }) => {
           type: 'APPROVE_PAIDLEAVE',
           payload: id
         })
-        alert(`You ${status ? 'approved' : 'rejected' } the paid leave`)
       })
       .catch(err => {
         dispatch(setError(err.response.data.message))

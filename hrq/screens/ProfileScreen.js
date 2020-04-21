@@ -34,15 +34,17 @@ export default function ProfileScreen () {
           </View>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View style={{flex: 1, marginRight: 10}}>
-              <Text style={[styles.textData, {fontSize: 15, fontWeight: 'bold'}]}>Contact</Text>
+              <Text style={[styles.textData, {fontSize: 15, fontWeight: 'bold', marginTop: 15}]}>Contact</Text>
               <View >
-                <Text style={styles.textData}>{user.payload.address}</Text>
-                <Text style={styles.textData}>{user.payload.phoneNumber}</Text>
+                <Text style={styles.textData}>Address : {user.payload.address}</Text>
+                <Text style={styles.textData}>Phone Number : {user.payload.phoneNumber}</Text>
               </View>
             </View>
           </View>
         </View>
       </View>
+
+      <Footer/>
     </View>
   )
 }

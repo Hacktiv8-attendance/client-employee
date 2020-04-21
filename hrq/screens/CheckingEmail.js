@@ -1,112 +1,106 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { StyleSheet,View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet,View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import Constant from 'expo-constants';
 import { useNavigation } from '@react-navigation/native'
 import allAction from '../store/actions';
+import BackHeader from '../components/BackHeader';
 
 export default function CheckingEmail() {
-    const navigation = useNavigation()
-    const dispatch = useDispatch()
-    const [email, setEmail] = useState('')
-    const [toggle, setToggle] = useState(false)
-    const [code, setCode] = useState('')
-    let user = useSelector(state => state.user)
+  const navigation = useNavigation()
+  const dispatch = useDispatch()
+  const [email, setEmail] = useState('')
+  const [toggle, setToggle] = useState(false)
+  const [code, setCode] = useState('')
+  let user = useSelector(state => state.user)
 
-    function checkEmail () {
-        dispatch(allAction.user.findEmail({
-            email
-        }))
-        setToggle(true)
+  function checkEmail () {
+      dispatch(allAction.user.findEmail({
+          email
+      }))
+      setToggle(true)
+  }
+  
+  const checkCode = () => {
+    console.log(user.resetCode, '============================================================================')
+    console.log(code)
+    if(code == user.resetCode) {
+      dispatch(allAction.user.setEmailReset(email))
+      navigation.navigate("ResetPassword")
+    } else {
+      dispatch(allAction.user.setError('Wrong Code'))
     }
-    
-    const checkCode = () => {
-      console.log(user.resetCode, '============================================================================')
-      console.log(code)
-      if(code == user.resetCode) {
-        dispatch(allAction.user.setEmailReset(email))
-        navigation.navigate("ResetPassword")
-      } else {
-        dispatch(allAction.user.setError('Wrong Code'))
-      }
-    }
+  }
 
-    function back () {
-        navigation.navigate("Login")
-    }
+  if (user.resetPassword) navigation.navigate("Login")
 
-    if (user.resetPassword) navigation.navigate("Login")
-    if (user.emailReset) navigation.navigate("ResetPassword")
-    return(
+  return(
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <View style={styles.statusBar}/>
+
+        <BackHeader
+          title="Forgot Password"
+        />
+        
         <View style={styles.container}>
-            
-          {/* <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}> */}
+          <View>
+            <Text style={styles.textHeader}>{toggle ? 'Code Verification' : 'Check Email'}</Text>
+            <Text style={styles.subHeader}>{toggle ? 'Please check your email!' : 'We need to check your data first'}</Text>
+          </View>
+
+          {user.error ? <Text style={styles.textError}>{user.error}</Text> : <Text style={[styles.textError, { color: '#e4f9f5' }]}>Error</Text>}
+
+          {toggle ? <View>
             <View>
-              <Text style={styles.textHeader}>{toggle ? 'Code verification' : 'Check Email'}</Text>
-              <Text style={styles.subHeader}>{toggle ? 'Please Check your email!' : 'We need to check your data first'}</Text>
+              <Text style={styles.textLabel}>Code: </Text>
+              <TextInput
+                value={code}
+                onChangeText={code => setCode(code)}
+                placeholder='123456'
+                style={styles.input}
+              />
             </View>
-
-            {user.error && <Text style={styles.textError}>{user.error}</Text> }
-
-            {toggle ? <View>
               <View>
-                <Text style={styles.textLabel}>Code: </Text>
-                <TextInput
-                  value={code}
-                  onChangeText={code => setCode(code)}
-                  placeholder='123456'
-                  style={styles.input}
-                />
+                <TouchableOpacity 
+                  style={styles.button}
+                  onPress={checkCode}
+                >
+                  <Text style={styles.buttonText}>Verify</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  style={[styles.button, { backgroundColor: "#30e3ca"}]}
+                  onPress={checkEmail}
+                >
+                  <Text style={styles.buttonText}>Resend Code</Text>
+                </TouchableOpacity>
               </View>
+            </View> : <View>
+              <View>
+                <Text style={styles.textLabel}>Email: </Text>
+                  <TextInput
+                    value={email}
+                    onChangeText={email => setEmail(email)}
+                    placeholder='example@example.com'
+                    keyboardType="email-address"
+                    textContentType="emailAddress"
+                    style={styles.input}
+                  />
+                </View>
                 <View>
                   <TouchableOpacity 
                     style={styles.button}
-                    onPress={checkCode}
-                  >
-                    <Text style={styles.buttonText}>Verify</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity 
-                    style={[styles.button, { backgroundColor: "#30e3ca"}]}
                     onPress={checkEmail}
                   >
-                    <Text style={styles.buttonText}>Resend Code</Text>
+                    <Text style={styles.buttonText}>Confirm</Text>
                   </TouchableOpacity>
                 </View>
-              </View> : <View>
-                <View>
-                  <Text style={styles.textLabel}>Email: </Text>
-                    <TextInput
-                      value={email}
-                      onChangeText={email => setEmail(email)}
-                      placeholder='example@example.com'
-                      keyboardType="email-address"
-                      textContentType="emailAddress"
-                      style={styles.input}
-                    />
-                  </View>
-                  <View>
-                    <TouchableOpacity 
-                      style={styles.button}
-                      onPress={checkEmail}
-                    >
-                      <Text style={styles.buttonText}>Confirm</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-            }
-
-            <View>
-              <TouchableOpacity 
-                style={styles.button}
-                onPress={back}
-              >
-                <Text style={styles.buttonText}>Back</Text>
-              </TouchableOpacity>
-            </View>
-
-          {/* </ScrollView> */}
+              </View>
+          }
         </View>
-      );
+      </View>
+    </TouchableWithoutFeedback>
+  );
 }
 
 
@@ -137,6 +131,7 @@ const styles = StyleSheet.create({
     },
     buttonText: {
       textAlign: 'center',
+      color: '#e4f9f5'
     },
     textLabel: {
       marginLeft: 30,
@@ -187,13 +182,15 @@ const styles = StyleSheet.create({
       margin: 6
     },
     subHeader: {
-        textAlign: "center",
-              marginBottom: 40
+      textAlign: "center",
     },
     textError: {
       color: '#FF6D4E',
       textAlign: "center",
       fontSize: 20,
-      marginBottom: 15
+    },
+    statusBar: {
+      height: Constant.statusBarHeight,
+      backgroundColor: '#11999e'
     }
   });

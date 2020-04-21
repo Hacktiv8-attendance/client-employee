@@ -1,92 +1,93 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { StyleSheet,View, Text, Image, TextInput, TouchableOpacity, AsyncStorage } from 'react-native';
+import { StyleSheet,View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import Constant from 'expo-constants';
-import { ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native'
 import allAction from '../store/actions';
+import BackHeader from '../components/BackHeader';
 
 export default function ResetPassword() {
-    const navigation = useNavigation()
-    const dispatch = useDispatch()
-    const [password, setPassword] = useState('')
-    const [passwordConfirmation, setPasswordConfirmation] = useState('')
-    let user = useSelector(state => state.user)
-    let email = user.emailReset
-    
+  const navigation = useNavigation()
+  const dispatch = useDispatch()
+  const [password, setPassword] = useState('')
+  const [passwordConfirmation, setPasswordConfirmation] = useState('')
+  let user = useSelector(state => state.user)
+  let email = user.emailReset
+  
 
-    function resetPasswordButton () {
-      if(password === passwordConfirmation) {
-        if(password.length < 6) {
-          dispatch(allAction.user.setError('password length must be greater than 6'))
-        } else {
-          dispatch(allAction.user.resetPassword({
-              email,
-              password
-          }))
-        }
+  function resetPasswordButton () {
+    if(password === passwordConfirmation) {
+      if(password.length < 6) {
+        dispatch(allAction.user.setError('password length must be greater than 6'))
       } else {
-        dispatch(allAction.user.setError('confirmation password rejected'))
+        dispatch(allAction.user.resetPassword({
+            email,
+            password
+        }))
       }
+    } else {
+      dispatch(allAction.user.setError('confirmation password rejected'))
     }
+  }
+  
+  if (user.resetPassword) navigation.navigate("Login")
 
-    function back () {
-      navigation.navigate("Login")
-    }
-    
-    if (user.resetPassword) navigation.navigate("Login")
-    return(
+  return(
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <View style={styles.statusBar}/>
+
+        <BackHeader
+          title="Reset Password"
+        />
+
         <View style={styles.container}>
-            <View>
-              <Text style={styles.textHeader}>Reset Password</Text>
-            </View>
+          <View>
+            <Text style={styles.textHeader}>Reset Password</Text>
+          </View>
 
-            {user.error && <Text style={styles.textError}>{user.error}</Text> }
+          {
+            user.error
+            ? <Text style={styles.textError}>{user.error}</Text>
+            : <Text style={[styles.textError, {color: '#e4f9f5'}]}>Error</Text>
+          }
 
-            <View>
-              <Text style={styles.textLabel}>Password: </Text>
-    
-              <TextInput
-                value={password}
-                onChangeText={password => setPassword(password)}
-                placeholder='password'
-                textContentType="password"
-                secureTextEntry={true}
-                style={styles.input}
-              />
-    
-              <Text style={styles.textLabel}>Confirmation Password: </Text>
-              <TextInput
-                value={passwordConfirmation}
-                onChangeText={passwordConfirmation => setPasswordConfirmation(passwordConfirmation)}
-                placeholder='confirmation password'
-                textContentType="password"
-                secureTextEntry={true}
-                style={styles.input}
-              />
-    
-            </View>
-            
-            <View>
-              <TouchableOpacity 
-                style={styles.button}
-                onPress={resetPasswordButton}
-              >
-                <Text style={styles.buttonText}>Confirm</Text>
-              </TouchableOpacity>
-            </View>
+          <View>
+            <Text style={styles.textLabel}>Password : </Text>
 
+            <TextInput
+              value={password}
+              onChangeText={password => setPassword(password)}
+              placeholder='password'
+              textContentType="password"
+              secureTextEntry={true}
+              style={styles.input}
+            />
 
-            <View>
-              <TouchableOpacity 
-                style={styles.button}
-                onPress={back}
-              >
-                <Text style={styles.buttonText}>Back</Text>
-              </TouchableOpacity>
-            </View>
+            <Text style={styles.textLabel}>Confirmation Password : </Text>
+            <TextInput
+              value={passwordConfirmation}
+              onChangeText={passwordConfirmation => setPasswordConfirmation(passwordConfirmation)}
+              placeholder='confirmation password'
+              textContentType="password"
+              secureTextEntry={true}
+              style={styles.input}
+            />
+
+          </View>
+          
+          <View>
+            <TouchableOpacity 
+              style={styles.button}
+              onPress={resetPasswordButton}
+            >
+              <Text style={styles.buttonText}>Confirm</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      );
+      </View>
+    </TouchableWithoutFeedback>
+  );
 }
 
 
@@ -95,6 +96,10 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#e4f9f5',
       justifyContent: "center"
+    },
+    statusBar: {
+      height: Constant.statusBarHeight,
+      backgroundColor: '#11999e',
     },
     contentContainer: {
       paddingTop: Constant.statusBarHeight,
@@ -114,10 +119,10 @@ const styles = StyleSheet.create({
       textAlign: 'center',
       fontWeight: 'bold',
       fontSize: 30,
-      marginBottom: 40
     },
     buttonText: {
       textAlign: 'center',
+      color: '#e4f9f5'
     },
     textLabel: {
       marginLeft: 30,
@@ -171,6 +176,5 @@ const styles = StyleSheet.create({
       color: '#FF6D4E',
       textAlign: "center",
       fontSize: 20,
-      marginBottom: 15
     }
   });
