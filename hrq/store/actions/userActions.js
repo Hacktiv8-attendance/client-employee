@@ -1,11 +1,18 @@
 import axios from 'axios';
 import haversine from 'haversine-distance';
-const serverUrl = 'http://localhost:3000'
+const serverUrl = 'http://18.138.253.176'
 
 const setUser = (user) => {
   return {
     type: 'SET_USER',
     payload: user
+  }
+}
+
+const setClick = (status) => {
+  return {
+    type: 'SET_CLICK',
+    payload: status
   }
 }
 
@@ -186,6 +193,7 @@ const absent = (data) => {
   const { token, EmployeeId, jwt, latitude, longitude } = data
   return (dispatch) => {
     dispatch(setLoading(true))
+    dispatch(setClick(true))
     const locEmployee = { latitude, longitude }
     const locOffice = { latitude: -6.468127, longitude: 106.765711 }
     const distance = haversine(locEmployee, locOffice)
@@ -203,9 +211,11 @@ const absent = (data) => {
     .then(({ data }) => {
       dispatch(setStatusAbsence(data))
       dispatch(setLoading(false))
+      dispatch(setClick(false))
     })
     .catch(err => {
       dispatch(setError(err))
+      dispatch(setClick(false))
       dispatch(setLoading(false))
     })
   }
@@ -329,4 +339,5 @@ export default {
   setPaidLeave,
   fetchBroadcast,
   setTokenNotif,
+  setClick
 }

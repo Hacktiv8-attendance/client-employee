@@ -142,7 +142,11 @@ export default function LandingScreen () {
             </View>
             
             <View>
-              <TouchableOpacity style={styles.button} onPress={handleLogin}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleLogin}
+                activeOpacity={1}
+              >
                 {btnLoading
                   ? <ActivityIndicator
                       size='small'

@@ -48,6 +48,7 @@ export default function History () {
       <Footer />
     </View>
   )
+  
   return (
     <View style={styles.container}>
       <View style={styles.statusBar}/>

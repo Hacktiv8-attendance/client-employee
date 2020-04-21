@@ -21,6 +21,17 @@ export default function ListPaidLeave ({data}) {
     dispatch(allAction.user.approvePaidLeave(payload))
   }
 
+  const unClick = (type) => {
+    console.log(type, '=======masuk=================')
+    if (type === 'approve') {
+      setApprove(false)
+      dispatch(allAction.user.setClick(false))
+    } else {
+      setReject(false)
+      dispatch(allAction.user.setClick(false))
+    }
+  }
+
   return (
     <View style={{marginBottom: bottom}}>
       <TouchableOpacity style={styles.containerTitle} 
@@ -59,6 +70,7 @@ export default function ListPaidLeave ({data}) {
             onPress={() => {
               approval(true)
               setApprove(true)
+              dispatch(allAction.user.setClick(true))
             }}
             activeOpacity={1}
           > 
@@ -69,7 +81,7 @@ export default function ListPaidLeave ({data}) {
                   size='small'
                   color='#e4f9f5'
                 />
-              : setApprove(false)
+              : unClick('approve')
               : <Text style={styles.buttonText}>Approve</Text>
             }
           </TouchableOpacity>
@@ -78,6 +90,7 @@ export default function ListPaidLeave ({data}) {
             onPress={() => {
               approval(false)
               setReject(true)
+              dispatch(allAction.user.setClick(true))
             }}
             activeOpacity={1}
           >
@@ -88,7 +101,7 @@ export default function ListPaidLeave ({data}) {
                   size='small'
                   color='#e4f9f5'
                 />
-              : setReject(false)
+              : unClick('reject')
               : <Text style={styles.buttonText}>Reject</Text>
             }
           </TouchableOpacity>

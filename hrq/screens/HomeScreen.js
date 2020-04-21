@@ -22,7 +22,7 @@ export default function HomeScreen () {
   const dispatch = useDispatch()
 
   const greetings = (hour) => {
-    if(hour >= 4 && hour < 12) return 'morning'
+    if(hour >= 6 && hour < 12) return 'morning'
     if(hour >= 12 && hour <= 18) return 'afternoon'
     else return 'evening'
   }
@@ -106,6 +106,25 @@ export default function HomeScreen () {
     return <Text>No access to camera</Text>;
   }
 
+  if (user.loading && user.click === false) return (
+    <View style={styles.container}>
+      <View style={styles.statusBar} />
+
+      <Header
+        title="Scan QR"
+      />
+
+      <View style={styles.containerLoading}>
+        <ActivityIndicator
+          size='large'
+          color='#11999e'
+        />
+      </View>
+
+      <Footer />
+    </View>
+  )
+
   return (
     <View style={styles.container}>
       <View style={styles.statusBar}/>
@@ -136,7 +155,7 @@ export default function HomeScreen () {
         </View>
 
         <View>
-        { scanned
+        { scanned && user.loading === false
           ? <Text style={styles.textStatus}>Successfully record your timestamp</Text>
           : <Text style={[styles.textStatus, {color: '#e4f9f5'}]}>Successfully record your timestamp</Text>
         }
@@ -156,8 +175,8 @@ export default function HomeScreen () {
               backgroundColor: 'transparent'
             }}>
             {
-              user.loading && 
-              <View style={styles.containerLoading}>
+              user.loading && user.click &&
+              <View style={styles.loading}>
                 <ActivityIndicator
                   size='large'
                   color='#11999e'
@@ -165,7 +184,7 @@ export default function HomeScreen () {
               </View>
             }
             {
-              scanned &&
+              scanned && user.loading === false &&
               (
                 <TouchableOpacity style={styles.button} onPress={() => setScanned(false)}>
                   <Text style={styles.text}>Scan Again</Text>
@@ -228,6 +247,12 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#e4f9f5',
+  },
+  loading: {
+    flex: 1,
+    backgroundColor: 'transparent',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   containerLoading: {
     flex: 1,

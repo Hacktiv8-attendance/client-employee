@@ -22,7 +22,8 @@ const initialReducers = {
   resetPassword: false,
   emailReset: '',
   paidLeave: [],
-  resetCode: null
+  resetCode: null,
+  click: false
 }
 
 export default function userReducers (state = initialReducers, action) {
@@ -63,6 +64,8 @@ export default function userReducers (state = initialReducers, action) {
       return {...state, resetCode: action.payload}
     case 'SET_TOKEN_NOTIF':
       return {...state, tokenNotif: action.payload}
+    case 'SET_CLICK':
+      return {...state, click: action.payload}
     default:
       console.log('masuk default')
       return state;

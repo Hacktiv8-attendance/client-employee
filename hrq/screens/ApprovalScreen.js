@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import { View, Text, TouchableOpacity, StyleSheet, Modal, Button, ScrollView, RefreshControl } from 'react-native';
+import { View, StyleSheet, ActivityIndicator, ScrollView, RefreshControl } from 'react-native';
 import Constant from 'expo-constants';
 import Header from '../components/Header';
 import allAction from '../store/actions';
-import moment from 'moment';
 import _ from 'lodash'
 import Footer from '../components/Footer';
 import ListPaidLeave from '../components/ListPaidLeave';
@@ -31,6 +30,25 @@ export default function ApprovalScreen() {
     useEffect(() => {
         dispatch(allAction.user.fetchPaidLeave({ token: user.token}))
     }, [])
+
+    if (user.loading && user.click === false) return (
+        <View style={styles.container}>
+          <View style={styles.statusBar} />
+    
+          <Header
+            title="Paid Leave Approval"
+          />
+    
+          <View style={styles.containerLoading}>
+            <ActivityIndicator
+              size='large'
+              color='#11999e'
+            />
+          </View>
+    
+          <Footer />
+        </View>
+      )
 
     return (
         <View style={styles.container}>
@@ -127,6 +145,12 @@ const styles = StyleSheet.create({
     },
     modalOption: {
         width: 75
+    },
+    containerLoading: {
+        flex: 1,
+        backgroundColor: '#e4f9f5',
+        alignItems: 'center',
+        justifyContent: 'center'
     }
     
 })

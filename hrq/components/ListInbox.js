@@ -15,7 +15,7 @@ export default function ListInbox ({ message }) {
     <View style={{marginBottom: bottom}}>
       <TouchableOpacity style={styles.containerTitle} 
         onPress={() => {
-          setIcon('ios-mail-open')
+          setIcon(click ? 'ios-mail' : 'ios-mail-open')
           setClick(!click)
           setHeight(click ? 0 : 300)
           setMarginTop(click ? -60 : -20)
