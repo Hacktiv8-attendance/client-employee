@@ -6,7 +6,6 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import Logout from '../components/Logout';
 import History from '../screens/History';
-import ProfileScreen from '../screens/ProfileScreen';
 import InboxScreen from '../screens/InboxScreen';
 import { useSelector } from 'react-redux';
 
@@ -15,7 +14,7 @@ export default function DrawerSideNavigator () {
   const Drawer = createDrawerNavigator()
   return (
     <Drawer.Navigator drawerStyle={{backgroundColor: '#e4f9f5'}}>
-      <Drawer.Screen name= 'scan' component={HomeScreen} options={{
+      <Drawer.Screen name= 'Scan' component={HomeScreen} options={{
         drawerIcon: ({ focused }) => (
           <TabBarIcon focused={focused} name="md-qr-scanner" />
         ),
@@ -27,11 +26,12 @@ export default function DrawerSideNavigator () {
         ),
       }} />
 
-      <Drawer.Screen name= 'Approval' component={ApprovalScreen} options={{
+      { authLevel < 3 && <Drawer.Screen name= 'Approval' component={ApprovalScreen} options={{
         drawerIcon: ({ focused }) => (
           <TabBarIcon focused={focused} name="ios-filing" />
         ),
-      }} />
+      }} /> }
+
 
       <Drawer.Screen name='History' component={History} options={{
         drawerIcon: ({ focused }) => (
@@ -45,7 +45,7 @@ export default function DrawerSideNavigator () {
         )
       }} />
 
-      <Drawer.Screen  name='logout' component={Logout} options={{
+      <Drawer.Screen  name='Logout' component={Logout} options={{
         drawerIcon: ({ focused }) => (
           <TabBarIcon focused={focused} name="ios-power" />
         )

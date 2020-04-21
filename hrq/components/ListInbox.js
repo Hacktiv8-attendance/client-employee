@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function ListInbox () {
+export default function ListInbox ({ message }) {
   return (
     <View style={styles.container}>
       <View style={styles.row}>
@@ -12,7 +12,7 @@ export default function ListInbox () {
           style={{marginBottom: 10, marginLeft: 10}}
           color='#e4f9f5'
         />
-        <Text style={styles.textSubject}>Subject</Text>
+        <Text style={styles.textSubject}>{message.message}</Text>
       </View>
     </View>
   )

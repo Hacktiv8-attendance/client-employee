@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { StyleSheet,View, Text, Image, TextInput, TouchableOpacity, AsyncStorage, Button } from 'react-native';
+import { StyleSheet,View, Text, TextInput, TouchableOpacity } from 'react-native';
 import Constant from 'expo-constants';
-import { ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native'
 import allAction from '../store/actions';
 
@@ -25,6 +24,7 @@ export default function CheckingEmail() {
       console.log(user.resetCode, '============================================================================')
       console.log(code)
       if(code == user.resetCode) {
+        dispatch(allAction.user.setEmailReset(email))
         navigation.navigate("ResetPassword")
       } else {
         dispatch(allAction.user.setError('Wrong Code'))
@@ -65,7 +65,12 @@ export default function CheckingEmail() {
                   >
                     <Text style={styles.buttonText}>Verify</Text>
                   </TouchableOpacity>
-                  <Button onPress={checkEmail} title="Resend Code" />
+                  <TouchableOpacity 
+                    style={[styles.button, { backgroundColor: "#30e3ca"}]}
+                    onPress={checkEmail}
+                  >
+                    <Text style={styles.buttonText}>Resend Code</Text>
+                  </TouchableOpacity>
                 </View>
               </View> : <View>
                 <View>

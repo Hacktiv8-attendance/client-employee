@@ -223,7 +223,7 @@ const fetchAbsence = ({ token }) => {
     dispatch(setLoading(true))
     axios({
       method: 'get',
-      url: `${serverUrl}/employee/absence/${id}`,
+      url: `${serverUrl}/employee/absence`,
       headers: {
         token
       }
