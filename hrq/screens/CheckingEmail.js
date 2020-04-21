@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { StyleSheet,View, Text, Image, TextInput, TouchableOpacity, AsyncStorage } from 'react-native';
+import { StyleSheet,View, Text, Image, TextInput, TouchableOpacity, AsyncStorage, Button } from 'react-native';
 import Constant from 'expo-constants';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native'
@@ -10,21 +10,31 @@ export default function CheckingEmail() {
     const navigation = useNavigation()
     const dispatch = useDispatch()
     const [email, setEmail] = useState('')
+    const [toggle, setToggle] = useState(false)
+    const [code, setCode] = useState('')
     let user = useSelector(state => state.user)
 
     function checkEmail () {
-        console.log({
-            email
-        })
         dispatch(allAction.user.findEmail({
             email
         }))
+        setToggle(true)
+    }
+    
+    const checkCode = () => {
+      console.log(user.resetCode, '============================================================================')
+      console.log(code)
+      if(code == user.resetCode) {
+        navigation.navigate("ResetPassword")
+      } else {
+        dispatch(allAction.user.setError('Wrong Code'))
+      }
     }
 
     function back () {
         navigation.navigate("Login")
     }
-    
+
     if (user.resetPassword) navigation.navigate("Login")
     if (user.emailReset) navigation.navigate("ResetPassword")
     return(
@@ -32,35 +42,53 @@ export default function CheckingEmail() {
             
           {/* <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}> */}
             <View>
-              <Text style={styles.textHeader}>Check Email</Text>
-              <Text style={styles.subHeader}>We need to check your data first</Text>
-
+              <Text style={styles.textHeader}>{toggle ? 'Code verification' : 'Check Email'}</Text>
+              <Text style={styles.subHeader}>{toggle ? 'Please Check your email!' : 'We need to check your data first'}</Text>
             </View>
 
             {user.error && <Text style={styles.textError}>{user.error}</Text> }
 
-            <View>
-              <Text style={styles.textLabel}>Email: </Text>
-    
-              <TextInput
-                value={email}
-                onChangeText={email => setEmail(email)}
-                placeholder='example@example.com'
-                keyboardType="email-address"
-                textContentType="emailAddress"
-                style={styles.input}
-              />
-    
-            </View>
-            
-            <View>
-              <TouchableOpacity 
-                style={styles.button}
-                onPress={checkEmail}
-              >
-                <Text style={styles.buttonText}>Confirm</Text>
-              </TouchableOpacity>
-            </View>
+            {toggle ? <View>
+              <View>
+                <Text style={styles.textLabel}>Code: </Text>
+                <TextInput
+                  value={code}
+                  onChangeText={code => setCode(code)}
+                  placeholder='123456'
+                  style={styles.input}
+                />
+              </View>
+                <View>
+                  <TouchableOpacity 
+                    style={styles.button}
+                    onPress={checkCode}
+                  >
+                    <Text style={styles.buttonText}>Verify</Text>
+                  </TouchableOpacity>
+                  <Button onPress={checkEmail} title="Resend Code" />
+                </View>
+              </View> : <View>
+                <View>
+                  <Text style={styles.textLabel}>Email: </Text>
+                    <TextInput
+                      value={email}
+                      onChangeText={email => setEmail(email)}
+                      placeholder='example@example.com'
+                      keyboardType="email-address"
+                      textContentType="emailAddress"
+                      style={styles.input}
+                    />
+                  </View>
+                  <View>
+                    <TouchableOpacity 
+                      style={styles.button}
+                      onPress={checkEmail}
+                    >
+                      <Text style={styles.buttonText}>Confirm</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+            }
 
             <View>
               <TouchableOpacity 
