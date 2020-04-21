@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import React, { useEffect, useState, useCallback } from 'react';
+import { View, RefreshControl, ActivityIndicator, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
 import Constant from 'expo-constants';
@@ -11,6 +11,20 @@ import Footer from '../components/Footer';
 export default function History () {
   const dispatch = useDispatch()
   const user = useSelector(state => state.user)
+  const [refreshing, setRefreshing] = useState(false)
+
+  function wait(timeout) {
+    return new Promise(resolve => {
+      setTimeout(resolve, timeout);
+    });
+  }
+
+  const onRefresh = useCallback(() => {
+    console.log('masukkk')
+    setRefreshing(true);
+    dispatch(allAction.user.fetchAbsence({ id: user.payload.id, token: user.token }))
+    wait(2000).then(() => setRefreshing(false));
+  }, [refreshing]);
 
   useEffect(() => {
     dispatch(allAction.user.fetchAbsence({ id: user.payload.id, token: user.token }))
@@ -42,7 +56,13 @@ export default function History () {
         title="Absence Monthly"
       />
 
-      <ScrollView style={[styles.container, {marginTop: 20}]} contentContainerStyle={styles.contentContainer}>
+      <ScrollView
+        style={[styles.container, {marginTop: 20}]}
+        contentContainerStyle={styles.contentContainer}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <View>
           {user.absences && user.absences.map((absence, i) => <ListAbsence key={absence.id} absence={absence} no={i}/>)}
         </View>
