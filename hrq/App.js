@@ -5,7 +5,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { compose, applyMiddleware, createStore } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-import { ThemeProvider } from 'react-native-elements';
 
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 import LoginScreen from './screens/LandingScreen';
@@ -14,6 +13,7 @@ import CheckingEmail from './screens/CheckingEmail';
 import rootReducers from './store/reducers/rootReducers';
 import TabBarIcon from './components/TabBarIcon';
 import DrawerSideNavigator from './navigation/DrawerSideNavigator';
+import ProfileScreen from './screens/ProfileScreen';
 
 
 const Stack = createStackNavigator();
@@ -24,44 +24,49 @@ const store = createStore(rootReducers, compose(
 export default function App() {
   return (
     <Provider store={store}>
-      <ThemeProvider>
-        <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <NavigationContainer>
-            <Stack.Navigator>
-              <Stack.Screen
-                name="Login"
-                component={LoginScreen}
-                options={{
-                  headerShown: false,
-                }}
-              />
-              <Stack.Screen
-                name="Root"
-                component={DrawerSideNavigator}
-                options={{
-                  headerShown: false,
-                }}
-              />
-              <Stack.Screen
-                name="CheckingEmail"
-                component={CheckingEmail}
-                options={{
-                  headerShown: false,
-                }}
-              />
-              <Stack.Screen
-                name="ResetPassword"
-                component={ResetPassword}
-                options={{
-                  headerShown: false,
-                }}
-              />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </View>
-    </ThemeProvider>
-      </Provider>
+      <View style={styles.container}>
+        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="Root"
+              component={DrawerSideNavigator}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="CheckingEmail"
+              component={CheckingEmail}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="ResetPassword"
+              component={ResetPassword}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="ProfileScreen"
+              component={ProfileScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </View>
+    </Provider>
   );
 }
 

@@ -1,19 +1,19 @@
 import React, { useEffect } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import { useSelector, useDispatch } from 'react-redux';
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { ScrollView } from  'react-native-gesture-handler';
 import Constant from 'expo-constants';
-import allAction from '../store/actions';
-import ListAbsence from '../components/ListAbsence';
+import { useSelector,useDispatch } from 'react-redux';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import allAction from '../store/actions';
+import ListInbox from '../components/ListInbox';
 
-export default function History () {
-  const dispatch = useDispatch()
+export default function InboxScreen () {
   const user = useSelector(state => state.user)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(allAction.user.fetchAbsence({ id: user.payload.id, token: user.token }))
+    dispatch(allAction.user.fetchBroadcast(user.token))
   }, [])
 
   if (user.loading) return (
@@ -21,7 +21,7 @@ export default function History () {
       <View style={styles.statusBar} />
 
       <Header
-        title="Absence Monthly"
+        title="Inbox"
       />
 
       <View style={styles.containerLoading}>
@@ -34,17 +34,18 @@ export default function History () {
       <Footer />
     </View>
   )
+
   return (
     <View style={styles.container}>
       <View style={styles.statusBar}/>
 
       <Header
-        title="Absence Monthly"
+        title='Inbox'
       />
 
-      <ScrollView style={[styles.container, {marginTop: 20}]} contentContainerStyle={styles.contentContainer}>
+      <ScrollView style={styles.containerBody} contentContainerStyle={styles.contentContainer}>
         <View>
-          {user.absences && user.absences.map((absence, i) => <ListAbsence key={absence.id} absence={absence} no={i}/>)}
+          <ListInbox/>
         </View>
       </ScrollView>
 
@@ -54,9 +55,18 @@ export default function History () {
 }
 
 const styles = StyleSheet.create({
+  statusBar: {
+    height: Constant.statusBarHeight,
+    backgroundColor: '#11999e',
+  },
   container: {
     flex: 1,
     backgroundColor: '#e4f9f5',
+    justifyContent: 'center',
+  },
+  contentContainer: {
+    padding: 30,
+    paddingTop: 20
   },
   containerLoading: {
     flex: 1,
@@ -64,16 +74,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  textHeader: {
-    fontWeight: 'bold',
-    fontSize: 20
-  },
-  contentContainer: {
-    padding: 30,
-    paddingTop:0
-  },
-  statusBar: {
-    height: Constant.statusBarHeight,
-    backgroundColor: '#11999e'
+  containerBody: {
+    flex: 1,
   },
 })

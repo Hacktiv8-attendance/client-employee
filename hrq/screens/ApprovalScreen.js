@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import { View, Text, TouchableOpacity, TextInput, StyleSheet, FlatList, ActivityIndicator, AsyncStorage } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, StyleSheet, FlatList, ActivityIndicator, AsyncStorage, InteractionManager } from 'react-native';
 import Constant from 'expo-constants';
 import Header from '../components/Header';
 import allAction from '../store/actions';
@@ -30,14 +30,22 @@ export default function ApprovalScreen({ navigation }) {
                 >
                 <Text style={styles.buttonText}>Fetch Approval</Text>
             </TouchableOpacity>
-            {paidLeave.map(element => (
+            <FlatList
+                item={paidLeave}
+                renderItem={({ item }) => (
+                    <TouchableOpacity onPress={() => elementPress(item.id)}>
+                        <Text>{item.reason}</Text>
+                    </TouchableOpacity>
+                )}
+             />
+            {/* {paidLeave.map(element => (
                 <TouchableOpacity
                     key={element.id}
                     onPress={() => elementPress(element.id)}
                 >
                     <Text>{element.reason}</Text>
                 </TouchableOpacity>
-            ))}
+            ))} */}
         </View>
     )
 
