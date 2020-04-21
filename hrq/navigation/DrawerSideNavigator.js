@@ -8,8 +8,10 @@ import Logout from '../components/Logout';
 import History from '../screens/History';
 import ProfileScreen from '../screens/ProfileScreen';
 import InboxScreen from '../screens/InboxScreen';
+import { useSelector } from 'react-redux';
 
 export default function DrawerSideNavigator () {
+  const authLevel = useSelector(state => state.user.payload.authLevel)
   const Drawer = createDrawerNavigator()
   return (
     <Drawer.Navigator drawerStyle={{backgroundColor: '#e4f9f5'}}>
@@ -19,7 +21,7 @@ export default function DrawerSideNavigator () {
         ),
       }} />
 
-      <Drawer.Screen name= 'cuti' component={Cuti} options={{
+      <Drawer.Screen name= 'Paid Leave' component={Cuti} options={{
         drawerIcon: ({ focused }) => (
           <TabBarIcon focused={focused} name="ios-filing" />
         ),
@@ -31,13 +33,13 @@ export default function DrawerSideNavigator () {
         ),
       }} />
 
-      <Drawer.Screen name='history' component={History} options={{
+      <Drawer.Screen name='History' component={History} options={{
         drawerIcon: ({ focused }) => (
           <TabBarIcon focused={focused} name="ios-bookmarks" />
         )
       }} />
 
-      <Drawer.Screen name='inbox' component={InboxScreen} options={{
+      <Drawer.Screen name='Inbox' component={InboxScreen} options={{
         drawerIcon: ({ focused }) => (
           <TabBarIcon focused={focused} name="ios-mail" />
         )

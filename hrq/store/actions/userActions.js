@@ -56,7 +56,7 @@ const fetchBroadcast = (token) => {
     dispatch(setLoading(true))
     axios({
       method: 'get',
-      url: 'http://127.0.0.1:3000/employee/message',
+      url: `${serverUrl}/employee/message`,
       headers: {
         token
       }
@@ -266,7 +266,6 @@ const fetchPaidLeave = ({ token }) => {
       }
     })
     .then(({ data }) => {
-      console.log(data)
       dispatch(setPaidLeave(data))
     })
     .catch(err => {
@@ -277,25 +276,27 @@ const fetchPaidLeave = ({ token }) => {
   }
 }
 
-const approvePaidLeave = ({ id, status, completed, token }) => {
+const approvePaidLeave = ({ id, status, token }) => {  
   return (dispatch) => {
     dispatch(setLoading(true))
     axios({
       method: "PUT",
       url: `${serverUrl}/employee/paidLeave/${id}`,
       data: { 
-        status, 
-        completed 
+        status
       },
       headers: {
         token
       }
     })
       .then(({ data }) => {
-        console.log(data)
+        dispatch({
+          type: 'APPROVE_PAIDLEAVE',
+          payload: id
+        })
+        alert(`You ${status ? 'approved' : 'rejected' } the paid leave`)
       })
       .catch(err => {
-        console.log(err)
         dispatch(setError(err.response.data.message))
       })
       .finally(() => dispatch(setLoading(false)))

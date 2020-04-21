@@ -53,6 +53,8 @@ export default function userReducers (state = initialReducers, action) {
       return {...state, emailReset: action.payload}
     case 'SET_PAIDLEAVE':
       return {...state, paidLeave: action.payload}
+    case 'APPROVE_PAIDLEAVE' :
+      return {...state, paidLeave: [...state.paidLeave].filter(paidLeave => paidLeave.id !== action.payload)}
     case 'SET_BROADCAST':
       console.log(action.payload,'masuk set broadcast =================')
       return {...state, broadcast: action.payload}
