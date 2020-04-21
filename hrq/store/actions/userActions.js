@@ -23,6 +23,13 @@ const setError = (error) => {
   }
 }
 
+const setTokenNotif = (token) => {
+  return {
+    type: 'SET_TOKEN_NOTIF',
+    payload: token
+  }
+}
+
 const setResetPassword = (value) => {
   return {
     type: 'SET_RESET_PASSWORD',
@@ -211,7 +218,7 @@ const setAbsence = (absence) => {
   }
 }
 
-const fetchAbsence = ({ id, token }) => {
+const fetchAbsence = ({ token }) => {
   return (dispatch) => {
     dispatch(setLoading(true))
     axios({
@@ -222,12 +229,10 @@ const fetchAbsence = ({ id, token }) => {
       }
     })
     .then(({ data }) => {
-      console.log(data)
       dispatch(setAbsence(data))
       dispatch(setLoading(false))
     })
     .catch(err => {
-      console.log(err.response.data)
       dispatch(setError(err.response.data.message))
       dispatch(setLoading(false))
     }) 
@@ -323,5 +328,6 @@ export default {
   fetchPaidLeave,
   approvePaidLeave,
   setPaidLeave,
-  fetchBroadcast
+  fetchBroadcast,
+  setTokenNotif,
 }

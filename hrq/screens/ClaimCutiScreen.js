@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, ActivityIndicator, AsyncStorage } from 'react-native';
@@ -16,7 +16,7 @@ export default function ClaimCutiScreen ({ navigation }) {
   const [start, setStart] = useState(new Date());
   const [finish, setFinish] = useState(new Date());
   const [btnLoading, setBtnLoading] = useState(false);
-
+  
   function handleButton () {
     setBtnLoading(true);
     let now = moment(start)
@@ -40,6 +40,7 @@ export default function ClaimCutiScreen ({ navigation }) {
       setFinish(new Date())
       dispatch(allAction.user.setStatusPaidLeave(''))
     }, 2000)
+    
   }
 
   return (

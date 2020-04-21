@@ -1,4 +1,6 @@
 import * as WebBrowser from 'expo-web-browser';
+import * as Permissions from 'expo-permissions';
+import { Notifications } from 'expo';
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -19,6 +21,50 @@ export default function HomeScreen () {
   const user = useSelector(state => state.user)
   const dispatch = useDispatch()
 
+  const registerForPushNotificationsAsync = async () => {
+    const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      alert('Failed to get push token for push notification!');
+      return;
+    }
+    const token = await Notifications.getExpoPushTokenAsync();
+    console.log(token);
+    dispatch(allAction.user.setTokenNotif(token))
+
+    if (Platform.OS === 'android') {
+      Notifications.createChannelAndroidAsync('default', {
+        name: 'default',
+        sound: true,
+        priority: 'max',
+        vibrate: [0, 250, 250, 250],
+      });
+    }
+  };
+
+  const sendPushNotification = async ({ title, body, data }) => {
+    const message = {
+      to: user.tokenNotif,
+      sound: 'default',
+      title,
+      body,
+      _displayInForeground: true,
+    };
+    await fetch('https://exp.host/--/api/v2/push/send', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Accept-encoding': 'gzip, deflate',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(message),
+    });
+  };
+
   const storeData = async (user) => {
     try {
       console.log(user, '==========store data================')
@@ -38,6 +84,7 @@ export default function HomeScreen () {
     (async () => {
       const { status } = await Camera.requestPermissionsAsync();
       setHasPermission(status === 'granted');
+      registerForPushNotificationsAsync()
     })();
     setTimeout(() => {
       dispatch(allAction.user.setLoading(false))
@@ -107,7 +154,7 @@ export default function HomeScreen () {
           </View>
         </Camera>
       </View>
-      
+
       <Footer />
     </View>
   )

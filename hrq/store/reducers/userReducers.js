@@ -6,6 +6,7 @@ const initialReducers = {
     name: '',
   },
   token: '',
+  tokenNotif: null,
   absences: null,
   login: {
     email: '',
@@ -60,6 +61,8 @@ export default function userReducers (state = initialReducers, action) {
       return {...state, broadcast: action.payload}
     case 'SET_RESET_CODE':
       return {...state, resetCode: action.payload}
+    case 'SET_TOKEN_NOTIF':
+      return {...state, tokenNotif: action.payload}
     default:
       console.log('masuk default')
       return state;
