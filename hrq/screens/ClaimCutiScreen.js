@@ -7,7 +7,6 @@ import Header from '../components/Header';
 import allAction from '../store/actions';
 import moment from 'moment';
 import Footer from '../components/Footer';
-// import DateTimePicker from '@react-native-community/datetimepicker';
 import DatePicker from 'react-native-datepicker'
 
 export default function ClaimCutiScreen ({ navigation }) {
@@ -22,9 +21,14 @@ export default function ClaimCutiScreen ({ navigation }) {
     setBtnLoading(true);
     let now = moment(start)
     let end = moment(finish)
-    let duration = moment.duration(end.diff(now))
-    duration = duration.asDays()
+    let duration = moment.duration(end.diff(now)).asDays() + 1
+
+    if(duration > user.payload.paidLeave) {
+      setBtnLoading(false)
+      return alert("You don't have enough paid leave remaining")
+    }
     dispatch(allAction.user.requestPaidLeave({ SuperiorId: user.payload.SuperiorId, token: user.token, reason, duration: Math.ceil(duration), leaveDate: new Date(start) }))
+
   }
 
   if (user.statusPaidLeave) {
@@ -109,7 +113,7 @@ export default function ClaimCutiScreen ({ navigation }) {
           </View>
 
           <View>
-            <TouchableOpacity style={styles.button} onPress={() => handleButton()}>
+            <TouchableOpacity disabled={user.payload.paidLeave === 0 ? true : false} style={styles.button} onPress={() => handleButton()}>
               {btnLoading
                 ? <ActivityIndicator
                     size='small'
