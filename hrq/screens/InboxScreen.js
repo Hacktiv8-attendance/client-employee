@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState, useCallback } from 'react';
+import { View, RefreshControl, StyleSheet, ActivityIndicator } from 'react-native';
 import { ScrollView } from  'react-native-gesture-handler';
 import Constant from 'expo-constants';
 import { useSelector,useDispatch } from 'react-redux';
@@ -11,6 +11,20 @@ import ListInbox from '../components/ListInbox';
 export default function InboxScreen () {
   const user = useSelector(state => state.user)
   const dispatch = useDispatch()
+  const [refreshing, setRefreshing] = useState(false)
+
+  function wait(timeout) {
+    return new Promise(resolve => {
+      setTimeout(resolve, timeout);
+    });
+  }
+
+  const onRefresh = useCallback(() => {
+    console.log('masukkk')
+    setRefreshing(true);
+    dispatch(allAction.user.fetchAbsence({ id: user.payload.id, token: user.token }))
+    wait(2000).then(() => setRefreshing(false));
+  }, [refreshing]);
 
   useEffect(() => {
     dispatch(allAction.user.fetchBroadcast(user.token))
@@ -43,7 +57,13 @@ export default function InboxScreen () {
         title='Inbox'
       />
 
-      <ScrollView style={styles.containerBody} contentContainerStyle={styles.contentContainer}>
+      <ScrollView
+        style={styles.containerBody}
+        contentContainerStyle={styles.contentContainer}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <View>
           <ListInbox/>
         </View>
