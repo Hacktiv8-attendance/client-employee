@@ -3,8 +3,9 @@ import * as Permissions from 'expo-permissions';
 import { Notifications } from 'expo';
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { View, Text, StyleSheet, Button, AsyncStorage, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, Button, AsyncStorage, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { Camera } from 'expo-camera';
+import { Ionicons } from '@expo/vector-icons';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import Constant from 'expo-constants';
 import moment from 'moment';
@@ -19,6 +20,12 @@ export default function HomeScreen () {
   const [clock, setClock] = useState(moment(new Date()).format("dddd, MMMM Do YYYY, HH:mm:ss"));
   const user = useSelector(state => state.user)
   const dispatch = useDispatch()
+
+  const greetings = (hour) => {
+    if(hour >= 4 && hour < 12) return 'morning'
+    if(hour >= 12 && hour <= 18) return 'afternoon'
+    else return 'evening'
+  }
 
   const registerForPushNotificationsAsync =
    async () => {
@@ -76,7 +83,6 @@ export default function HomeScreen () {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    alert(`Successfully record your timestamp`);
     dispatch(allAction.user.absent({ jwt: data, EmployeeId: user.payload.id, token: user.token, latitude: user.location.coords.latitude, longitude: user.location.coords.longitude}))
   };
 
@@ -91,25 +97,6 @@ export default function HomeScreen () {
       storeData({ token: user.token, payload: user.payload})
     }, 500)
   }, []);
-
-  if(user.loading) return (
-    <View style={styles.container}>
-      <View style={styles.statusBar} />
-
-      <Header
-        title="Scan QR"
-      />
-
-      <View style={styles.containerLoading}>
-        <ActivityIndicator
-          size='large'
-          color='#11999e'
-        />
-      </View>
-
-      <Footer />
-    </View>
-  )
 
   if (hasPermission === null) {
     return <View />;
@@ -129,11 +116,30 @@ export default function HomeScreen () {
 
       <View style={styles.containerBody}>
         <View style={styles.containerProfile}>
+          <Ionicons
+            name={
+              greetings(Number(clock.substr(-8, 2))) === 'morning'
+              ? 'ios-sunny'
+              : greetings(Number(clock.substr(-8, 2))) === 'afternoon'
+              ? 'md-sunny'
+              : 'md-moon'
+            }
+            style={{marginTop: 4, marginRight: 20}}
+            size={30}
+            color='#e4f9f5'
+          />
           <View>
-            <Text style={styles.textProfile}>Hi, {user.payload.name && user.payload.name.split(' ')[0]}</Text>
+            <Text style={styles.text}>Good {greetings(Number(clock.substr(-8, 2)))}, {user.payload.name}</Text>
 
-            <Text style={styles.textProfile}>{clock.substr(0, (clock.length - 10))}</Text>
+            <Text style={styles.text}>{clock.substr(0, (clock.length - 10))}</Text>
           </View>
+        </View>
+
+        <View>
+        { scanned
+          ? <Text style={styles.textStatus}>Successfully record your timestamp</Text>
+          : <Text style={[styles.textStatus, {color: '#e4f9f5'}]}>Successfully record your timestamp</Text>
+        }
         </View>
           
         <Camera
@@ -146,11 +152,26 @@ export default function HomeScreen () {
           <View
             style={{
               flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
+              justifyContent: 'flex-end',
               backgroundColor: 'transparent'
             }}>
-            {scanned && <Button title='Tap to Scan Again' onPress={() => setScanned(false)} />}
+            {
+              user.loading && 
+              <View style={styles.containerLoading}>
+                <ActivityIndicator
+                  size='large'
+                  color='#11999e'
+                />
+              </View>
+            }
+            {
+              scanned &&
+              (
+                <TouchableOpacity style={styles.button} onPress={() => setScanned(false)}>
+                  <Text style={styles.text}>Scan Again</Text>
+                </TouchableOpacity>
+              )
+            }
           </View>
         </Camera>
       </View>
@@ -168,13 +189,26 @@ const styles = StyleSheet.create({
   },
   camera: {
     height: 300,
-    margin: 30
+    margin: 30,
+    marginTop: 15
   },
   containerBody: {
     flex: 1
   },
+  textStatus: {
+    alignSelf: 'center',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 15
+  },
   statusBar: {
     height: Constant.statusBarHeight,
+    backgroundColor: '#11999e',
+  },
+  button: {
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: '#11999e',
   },
   container: {
@@ -184,14 +218,15 @@ const styles = StyleSheet.create({
   },
   containerProfile: {
     padding: 10,
+    paddingLeft: 20,
     marginTop: 20,
-    alignItems: 'center',
+    flexDirection: 'row',
     backgroundColor: '#11999e',
     borderRadius: 30,
     marginLeft: 30,
     marginRight: 30
   },
-  textProfile: {
+  text: {
     color: '#e4f9f5',
   },
   containerLoading: {

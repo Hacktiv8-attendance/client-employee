@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#30e3ca',
     marginBottom: -20,
     zIndex: 1,
-    color: '#11999e',
   },
   data: {
     paddingTop: 30,

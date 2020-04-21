@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { View, Text, TouchableOpacity, StyleSheet, Modal, Button, ScrollView, RefreshControl } from 'react-native';
 import Constant from 'expo-constants';
@@ -6,78 +6,57 @@ import Header from '../components/Header';
 import allAction from '../store/actions';
 import moment from 'moment';
 import _ from 'lodash'
+import Footer from '../components/Footer';
+import ListPaidLeave from '../components/ListPaidLeave';
 
-export default function ApprovalScreen({ navigation }) {
+export default function ApprovalScreen() {
     const dispatch = useDispatch();
     const user = useSelector(state => state.user);
     const paidLeave = useSelector(state => state.user.paidLeave);
-    const [modal, setModal] = useState(false);
-    const [modalContent, setModalContent] = useState({})
-    const loading = useSelector(state => state.user.loading)
+    const [refreshing, setRefreshing] = useState(false)
 
-    const refreshGesture = () => {
-        dispatch(allAction.user.fetchPaidLeave({ token: user.token}))
+    function wait(timeout) {
+      return new Promise(resolve => {
+        setTimeout(resolve, timeout);
+      });
     }
-
-    const approval = (status) => {
-        const payload = { status, id: modalContent.id, token: user.token }
-        dispatch(allAction.user.approvePaidLeave(payload))
-        setModal(!modal)
-    }
+  
+    const onRefresh = useCallback(() => {
+      console.log('masukkk')
+      setRefreshing(true);
+      dispatch(allAction.user.fetchPaidLeave({ token: user.token}))
+      wait(2000).then(() => setRefreshing(false));
+    }, [refreshing]);
 
     useEffect(() => {
         dispatch(allAction.user.fetchPaidLeave({ token: user.token}))
     }, [])
 
     return (
-        <ScrollView 
-            contentContainerStyle={styles.container}
-            refreshControl={
-                <RefreshControl refreshing={loading} onRefresh={refreshGesture} />
-            }
-        >
+        <View style={styles.container}>
             <View style={styles.statusBar}/>
-            <Header title="Paid Leave Approval" />
+            
+            <Header
+                title="Paid Leave Approval"
+            />
 
-            <View style={styles.paidLeaveContainer}>
+            <ScrollView
+                style={[styles.container, {marginTop: 20}]}
+                contentContainerStyle={styles.contentContainer}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
+            >
                 {paidLeave.filter(element => element.completed !== true).map((element, index) => (
-                    <TouchableOpacity
-                        style={index % 2 === 0 ? styles.paidLeaveButton : styles.paidLeaveButtonOdd }
-                        key={element.id}
-                        onPress={() => {
-                            setModalContent(element)
-                            setModal(!modal)
-                        }}
-                    >   
-                        <Text style={{color: 'white'}}>{element.Employee.name}</Text>
-                        <Text style={{color: 'white'}}>{element.reason}</Text>
-                    </TouchableOpacity>
+                    <ListPaidLeave
+                        data={element}
+                        key={index}
+                    />
                 ))}
-            </View>
-            { modalContent && 
-                <Modal
-                    onRequestClose={() => setModal(!modal)}
-                    animationType="fade"
-                    visible={modal}
-                    transparent={true}
-                >   
-                    <View style={styles.modalContainer}>
-                        <View style={styles.modalBody}>
-                            <Text>{_.get(modalContent, ['Employee', 'name'])}</Text>
-                            <Text>Reason: {modalContent.reason}</Text>
-                            <Text>Duration: {modalContent.duration} day(s)</Text>
-                            <Text>Start: {moment(modalContent.leaveDate).format('dddd, DD MMMM YYYY')} </Text>
-                            <Text>End: {moment(modalContent.leaveDate).add(modalContent.duration - 1, 'd').format('dddd, DD MMMM YYYY')} </Text>
-                            <View style={styles.modalOptionContainer}>
-                                <Button color="#30e3ca" onPress={() => approval(true)} title="Approve" />
-                                <Button color="#11999e" onPress={() => approval(false)} title="Reject" />
-                            </View>
-                            <Button color="#40514e" onPress={() => setModal(!modal)} title="Cancel" />
-                        </View>
-                    </View>
-                </Modal>
-            }
-        </ScrollView>
+            </ScrollView>
+
+            <Footer />
+        </View>
     )
 
 }
@@ -103,21 +82,18 @@ const styles = StyleSheet.create({
         color: '#e4f9f5'
     },
     paidLeaveContainer:{
-        marginLeft: 20,
-        marginRight: 20,
-        marginTop: 15,
-        textAlign: "center",
-        justifyContent: 'center',
-        alignItems: 'center',
-
+        marginBottom: 15,
+    },
+    contentContainer: {
+        padding: 30,
+        paddingTop:0
     },
     paidLeaveButton: {
         marginBottom: 10,
-        borderRadius: 5,
+        borderRadius: 45,
         width: 320,
         height: 45,
-        justifyContent: "center",
-        alignItems: 'center',
+        padding: 30,
         backgroundColor: '#11999e',
     },
     paidLeaveButtonOdd: {
@@ -125,8 +101,6 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         width: 320,
         height: 45,
-        justifyContent: "center",
-        alignItems: 'center',
         backgroundColor: '#40514e',
     },
     modalContainer: {
