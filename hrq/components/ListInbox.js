@@ -35,7 +35,7 @@ export default function ListInbox ({ message }) {
       </TouchableOpacity>
       
       <View style={[styles.contentContainer, {maxHeight: height, marginTop, borderTopLeftRadius: border, borderTopRightRadius: border}]}>
-        <Text style={[styles.textBody, {maxHeight: height}]}>{message.message}</Text>
+        <Text style={[styles.textBody, {maxHeight: height, fontFamily: 'manrope', paddingLeft: 30}]}>{message.message}</Text>
       </View>
     </View>
   )
@@ -51,11 +51,11 @@ const styles = StyleSheet.create({
     zIndex: 1
   },
   contentContainer: {
-    backgroundColor: '#30e3ca',
+    backgroundColor: '#dad7cd',
     padding: 10,
     paddingTop: 20,
     borderBottomLeftRadius: 15,
-    borderBottomRightRadius: 15,
+    borderBottomRightRadius: 15
   },
   row: {
     flexDirection: 'row',
@@ -64,7 +64,9 @@ const styles = StyleSheet.create({
   textSubject: {
     marginBottom: 10,
     marginLeft: 30,
-    color: '#e4f9f5'
+    color: 'white',
+    fontFamily: 'lato',
+    fontSize: 17,
   },
   textBody: {
     paddingLeft: 10,

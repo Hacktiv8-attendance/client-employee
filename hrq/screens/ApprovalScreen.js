@@ -56,7 +56,6 @@ export default function ApprovalScreen() {
             <Header
                 title="Paid Leave Approval"
             />
-
             <ScrollView
                 style={[styles.container, {marginTop: 20}]}
                 contentContainerStyle={styles.contentContainer}
