@@ -114,7 +114,6 @@ export default function HomeScreen () {
             />
             <View>
               <Text style={styles.text}>Good {greetings(Number(clock.substr(-8, 2)))}, {user.payload.name}</Text>
-
               <Text style={styles.text}>{clock.substr(0, (clock.length - 10))}</Text>
             </View>
           </View>
@@ -122,7 +121,7 @@ export default function HomeScreen () {
           <View>
           { scanned && user.loading === false
             ? <Text style={styles.textStatus}>Successfully record your timestamp</Text>
-            : <Text style={[styles.textStatus, {color: '#e4f9f5'}]}>Successfully record your timestamp</Text>
+            : <Text style={[styles.textStatus, { color: '#e4f9f5'}]}>Successfully record your timestamp</Text>
           }
           </View>
             

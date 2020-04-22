@@ -42,7 +42,7 @@ export default function ClaimCutiScreen ({ navigation }) {
       <View style={styles.statusBar}/>
 
       <Header
-        title='Form Paid Leave'
+        title='Request Paid Leave'
       />
 
       <ScrollView>

@@ -20,13 +20,13 @@ export default function DrawerSideNavigator () {
         ),
       }} />
 
-      <Drawer.Screen name= 'Paid Leave' component={Cuti} options={{
+      <Drawer.Screen name= 'Request Paid Leave' component={Cuti} options={{
         drawerIcon: ({ focused }) => (
           <TabBarIcon focused={focused} name="ios-filing" />
         ),
       }} />
 
-      { authLevel < 3 && <Drawer.Screen name= 'Approval' component={ApprovalScreen} options={{
+      { authLevel < 3 && <Drawer.Screen name= 'Approve Paid Leave' component={ApprovalScreen} options={{
         drawerIcon: ({ focused }) => (
           <TabBarIcon focused={focused} name="ios-filing" />
         ),

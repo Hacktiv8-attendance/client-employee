@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native'
 import TabBarIcon from './TabBarIcon';
 
-
 export default function Header ({title}) {
   const user = useSelector(state => state.user)
   const navigation = useNavigation()
@@ -42,10 +41,12 @@ const styles = StyleSheet.create({
     paddingLeft: 30
   },
   containerImage: {
-    height: 30,
-    width: 30,
-    borderRadius:30,
-    marginTop: 5
+    height: 40,
+    width: 40,
+    borderRadius: 25,
+    marginTop: 5,
+    borderWidth: 2,
+    borderColor: '#30e3ca'
   },
   title: {
     fontSize: 20,

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ActivityIndicator, Alert } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import allAction from '../store/actions';
@@ -24,9 +24,11 @@ export default function ListPaidLeave ({data}) {
     if (type === 'approve') {
       setApprove(false)
       dispatch(allAction.user.setClick(false))
+      Alert.alert('Success', `You approved this paid leave.`)
     } else {
       setReject(false)
       dispatch(allAction.user.setClick(false))
+      Alert.alert('Success', `You rejected this paid leave.`)
     }
   }
 
