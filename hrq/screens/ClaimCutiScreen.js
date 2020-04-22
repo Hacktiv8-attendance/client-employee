@@ -142,6 +142,7 @@ const styles = StyleSheet.create({
   },
   containerInput: {
     // paddingTop: 20
+    fontFamily: 'lato'
   },
   statusBar: {
     height: Constant.statusBarHeight,
