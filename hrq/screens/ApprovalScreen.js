@@ -47,7 +47,7 @@ export default function ApprovalScreen() {
     
           <Footer />
         </View>
-      )
+    )
 
     return (
         <View style={styles.container}>
@@ -89,69 +89,14 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 20,
         marginTop: 200
-        
     },
     statusBar: {
         height: Constant.statusBarHeight,
         backgroundColor: '#11999e'
     },
-    button: {
-        height: 50,
-        borderRadius: 5,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#11999e',
-    },
-    buttonText: {
-        textAlign: 'center',
-        color: '#e4f9f5'
-    },
-    paidLeaveContainer:{
-        marginBottom: 15,
-    },
     contentContainer: {
         padding: 30,
         paddingTop:0
-    },
-    paidLeaveButton: {
-        marginBottom: 10,
-        borderRadius: 45,
-        width: 320,
-        height: 45,
-        padding: 30,
-        backgroundColor: '#11999e',
-    },
-    paidLeaveButtonOdd: {
-        marginBottom: 10,
-        borderRadius: 5,
-        width: 320,
-        height: 45,
-        backgroundColor: '#40514e',
-    },
-    modalContainer: {
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    modalBody: {
-        backgroundColor: '#e4f9f5',
-        height: 250,
-        width: 250,
-        borderRadius: 15,
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'center'
-    },
-    modalOptionContainer: {
-        width: 200,
-        marginTop: 50,
-        marginBottom: 15,
-        justifyContent: "space-around",
-        flexDirection: 'row'
-    },
-    modalOption: {
-        width: 75
     },
     containerLoading: {
         flex: 1,

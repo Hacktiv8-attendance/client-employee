@@ -1,13 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, TouchableOpacity, Image, StyleSheet, Text } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native'
 import TabBarIcon from './TabBarIcon';
 
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
+
+const fetchFont = () => {
+  return Font.loadAsync({
+    'source-sans': require('../assets/fonts/SourceSansPro-Bold.ttf'),
+  })
+}
 
 export default function Header ({title}) {
   const user = useSelector(state => state.user)
   const navigation = useNavigation()
+
+  const [dataLoaded, setDataLoaded] = useState(false)
+
+  if(!dataLoaded) {
+    return (
+      <AppLoading
+        startAsync={fetchFont}
+        onFinish={() => setDataLoaded(true)}
+      />
+    )
+  }
 
   return (
     <View style={styles.container}>
@@ -50,8 +69,8 @@ const styles = StyleSheet.create({
     borderColor: '#30e3ca'
   },
   title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginLeft: 10
+    fontSize: 22,
+    marginLeft: 10,
+    fontFamily: 'source-sans'
   }
 })

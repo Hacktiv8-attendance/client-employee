@@ -27,7 +27,7 @@
     },
     "android": {
       "package": "com.chromefox.hrq",
-      "versionCode": 1
+      "versionCode": 2
     }
   }
 }

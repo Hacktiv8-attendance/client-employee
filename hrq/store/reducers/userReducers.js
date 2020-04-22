@@ -25,6 +25,7 @@ const initialReducers = {
   resetCode: null,
   click: false,
   statusScan: false,
+  employees: [],
 }
 
 export default function userReducers (state = initialReducers, action) {
@@ -63,6 +64,8 @@ export default function userReducers (state = initialReducers, action) {
       return {...state, click: action.payload}
     case 'SET_STATUS_SCAN':
       return {... state, statusScan: action.payload}
+    case 'SET_EMPLOYEES':
+      return {...state, employees: action.payload}
     default:
       return state;
   }

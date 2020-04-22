@@ -1,5 +1,6 @@
 import axios from 'axios';
 import haversine from 'haversine-distance';
+import moment from 'moment';
 const serverUrl = 'http://18.138.253.176'
 
 const setUser = (user) => {
@@ -310,7 +311,41 @@ const approvePaidLeave = ({ id, status, token }) => {
   }
 }
 
+const setEmployees = (employees) => {
+  return {
+    type: 'SET_EMPLOYEES',
+    payload: employees
+  }
+}
 
+export const fetchEmployees = (token) => {
+  const month = moment().format('YYYY') + '-' + moment().format('MM')
+  return function(dispatch) {
+      dispatch(setLoading(true))
+      axios({
+        method: 'get',
+        url: `${serverUrl}/employee/staffabsence`,
+        params: {
+          month
+        },
+        headers: {
+          token
+        }
+      })
+      .then(({ data }) => {
+          if(data){
+              dispatch(setEmployees(data))
+          } else {
+              dispatch(setError('Data employees is not found'))
+          }
+          dispatch(setLoading(false))
+      })
+      .catch(err => {
+          dispatch(setError(err.response.data.message))
+          dispatch(setLoading(false))
+      })
+  }
+}
 
 export default {
   login,
@@ -333,5 +368,6 @@ export default {
   fetchBroadcast,
   setTokenNotif,
   setClick,
-  setStatusAbsence
+  setStatusAbsence,
+  fetchEmployees
 }

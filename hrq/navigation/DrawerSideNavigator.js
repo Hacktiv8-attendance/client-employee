@@ -8,6 +8,7 @@ import Logout from '../components/Logout';
 import History from '../screens/History';
 import InboxScreen from '../screens/InboxScreen';
 import { useSelector } from 'react-redux';
+import Employees from '../screens/Employees';
 
 export default function DrawerSideNavigator () {
   const { authLevel, id } = useSelector(state => state.user.payload)
@@ -32,6 +33,11 @@ export default function DrawerSideNavigator () {
         ),
       }} /> }
 
+      { authLevel < 3 && <Drawer.Screen name= 'Employees' component={Employees} options={{
+        drawerIcon: ({ focused }) => (
+          <TabBarIcon focused={focused} name="ios-people" />
+        ),
+      }} /> }
 
       <Drawer.Screen name='History' component={History} options={{
         drawerIcon: ({ focused }) => (
