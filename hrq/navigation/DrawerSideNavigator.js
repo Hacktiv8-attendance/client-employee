@@ -10,23 +10,23 @@ import InboxScreen from '../screens/InboxScreen';
 import { useSelector } from 'react-redux';
 
 export default function DrawerSideNavigator () {
-  const authLevel = useSelector(state => state.user.payload.authLevel)
+  const { authLevel, id } = useSelector(state => state.user.payload)
   const Drawer = createDrawerNavigator()
   return (
     <Drawer.Navigator drawerStyle={{backgroundColor: '#e4f9f5'}}>
       <Drawer.Screen name= 'Scan' component={HomeScreen} options={{
         drawerIcon: ({ focused }) => (
-          <TabBarIcon focused={focused} name="md-qr-scanner" />
+          <TabBarIcon focused={focused} name="md-qr-scanner"/>
         ),
       }} />
 
-      <Drawer.Screen name= 'Paid Leave' component={Cuti} options={{
+      { id !== 1 && <Drawer.Screen name= 'Request Paid Leave' component={Cuti} options={{
         drawerIcon: ({ focused }) => (
-          <TabBarIcon focused={focused} name="ios-filing" />
+          <TabBarIcon focused={focused} name="ios-create" />
         ),
-      }} />
+      }} /> }
 
-      { authLevel < 3 && <Drawer.Screen name= 'Approval' component={ApprovalScreen} options={{
+      { authLevel < 3 && <Drawer.Screen name= 'Approve Paid Leave' component={ApprovalScreen} options={{
         drawerIcon: ({ focused }) => (
           <TabBarIcon focused={focused} name="ios-filing" />
         ),

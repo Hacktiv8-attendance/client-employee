@@ -24,7 +24,9 @@ const store = createStore(rootReducers, compose(
 const fetchFont = () => {
   return Font.loadAsync({
     'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
-    'comic': require('./assets/fonts/ComicNeue-BoldItalic.ttf')
+    'manrope': require('./assets/fonts/Manrope-VariableFont_wght.ttf'),
+    'comic': require('./assets/fonts/ComicNeue-BoldItalic.ttf'),
+    'lato': require('./assets/fonts/Lato-Bold.ttf')
   })
 }
 

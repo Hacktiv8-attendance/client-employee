@@ -42,17 +42,17 @@ export default function ClaimCutiScreen ({ navigation }) {
       <View style={styles.statusBar}/>
 
       <Header
-        title='Form Paid Leave'
+        title='Request Paid Leave'
       />
 
       <ScrollView>
         <View style={styles.containerBody}>
-          <Text>Remaining Paid Leave : {user.payload.paidLeave}</Text>
+          <Text style={{fontFamily: 'lato', fontSize: 18}}>Remaining Paid Leave : {user.payload.paidLeave}</Text>
 
           {user.statusPaidLeave ? <Text style={styles.statusText}>{user.statusPaidLeave}</Text> : <Text style={styles.hiddenText}>test</Text>}
           
           <View style={styles.containerInput}>
-            <Text>Reason :</Text>
+            <Text style={{fontFamily: 'lato', fontSize: 17}}>Reason</Text>
             <TextInput
               style={styles.input}
               value={reason}
@@ -62,7 +62,7 @@ export default function ClaimCutiScreen ({ navigation }) {
 
             <View style={{flexDirection: 'row', marginBottom: 30}}>
               <View style={{flex: 1, marginRight: 8}}>
-                <Text>Start Date :</Text>
+                <Text style={{fontFamily: 'lato', fontSize: 14}}>Start Date</Text>
                 <TouchableOpacity
                   style={styles.inputDate}
                   onPress={() => setShow('start')}
@@ -84,7 +84,7 @@ export default function ClaimCutiScreen ({ navigation }) {
               </View>
 
               <View style={{flex: 1,marginLeft: 8}}>
-                <Text>Finish Date :</Text>
+                <Text style={{fontFamily: 'lato', fontSize: 14}}>Finish Date</Text>
                 <TouchableOpacity
                   style={styles.inputDate}
                   onPress={() => setShow('finish')}
@@ -142,6 +142,7 @@ const styles = StyleSheet.create({
   },
   containerInput: {
     // paddingTop: 20
+    fontFamily: 'lato'
   },
   statusBar: {
     height: Constant.statusBarHeight,

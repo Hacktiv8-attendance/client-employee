@@ -28,7 +28,8 @@ const styles = StyleSheet.create({
     marginBottom: 30
   },
   text: {
-    color: '#e4f9f5'
+    color: '#e4f9f5',
+    fontFamily: 'lato'
   },
   textDate: {
     padding: 10,
@@ -36,6 +37,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#30e3ca',
     marginBottom: -20,
     zIndex: 1,
+    fontFamily: 'lato',
+    paddingLeft: 20
   },
   data: {
     paddingTop: 30,

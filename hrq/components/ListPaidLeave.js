@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ActivityIndicator, Alert } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import allAction from '../store/actions';
@@ -24,9 +24,11 @@ export default function ListPaidLeave ({data}) {
     if (type === 'approve') {
       setApprove(false)
       dispatch(allAction.user.setClick(false))
+      Alert.alert('Success', `You approved this paid leave.`)
     } else {
       setReject(false)
       dispatch(allAction.user.setClick(false))
+      Alert.alert('Success', `You rejected this paid leave.`)
     }
   }
 
@@ -49,8 +51,8 @@ export default function ListPaidLeave ({data}) {
               uri: data.Employee.image_url
             }}
           />
-          <Text style={styles.textSubject}>{data.Employee.name}</Text>
-          <Text style={styles.textSubject}>{moment(data.createdAt).format('dddd, DD MMMM YYYY')}</Text>
+          <Text style={styles.textSubject}>{data.Employee.name.split(' ')[0]}</Text>
+          <Text style={styles.textSubject}>{moment(data.createdAt).format('ddd, DD MMMM YY')}</Text>
         </View>
       </TouchableOpacity>
       
@@ -62,7 +64,7 @@ export default function ListPaidLeave ({data}) {
           <Text style={[styles.textBody, {maxHeight: height}]}>Duration : {data.duration} {data.duration === 1 ? "day": "day's"}</Text>
         <Text style={[styles.textBody, {maxHeight: height}]}>Start : {moment(data.leaveDate).format('dddd, DD MMMM YYYY')}</Text>
         <Text style={[styles.textBody, {maxHeight: height}]}>End : {moment(data.leaveDate).add(data.duration - 1, 'd').format('dddd, DD MMMM YYYY')}</Text>
-        <View style={styles.row}>
+        <View style={[styles.row, { justifyContent: "center" }]}>
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
@@ -84,7 +86,7 @@ export default function ListPaidLeave ({data}) {
             }
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.button}
+            style={[styles.button, { backgroundColor: "#40514e" }]}
             onPress={() => {
               approval(false)
               setReject(true)
@@ -126,7 +128,7 @@ const styles = StyleSheet.create({
     marginLeft: 10
   },
   contentContainer: {
-    backgroundColor: '#30e3ca',
+    backgroundColor: '#dad7cd',
     padding: 10,
     paddingTop: 20,
     borderBottomLeftRadius: 15,
@@ -139,14 +141,17 @@ const styles = StyleSheet.create({
   textSubject: {
     marginBottom: 10,
     marginLeft: 10,
-    color: '#e4f9f5'
+    color: '#e4f9f5',
+    fontSize: 18,
+    fontWeight: 'bold'
   },
   textBody: {
     paddingLeft: 10,
   },
   buttonText: {
     textAlign: 'center',
-    color: '#e4f9f5'
+    color: '#e4f9f5',
+    fontWeight: 'bold'
   },
   button: {
     height: 30,
@@ -156,6 +161,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#11999e',
     margin: 10,
-    padding: 10
+    padding: 10,
   }
 })

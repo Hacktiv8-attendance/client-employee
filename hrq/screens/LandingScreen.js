@@ -114,7 +114,7 @@ export default function LandingScreen () {
               ? <Text style={styles.errorText}>{errorMsg}</Text>
               : <Text style={styles.hiddenText}>Error</Text>}
 
-              <Text style={styles.textLabel}>Email: </Text>
+              <Text style={styles.textLabel}>Email </Text>
 
               <TextInput
                 value={email}
@@ -125,7 +125,7 @@ export default function LandingScreen () {
                 style={styles.input}
               />
 
-              <Text style={styles.textLabel}>Password: </Text>
+              <Text style={styles.textLabel}>Password </Text>
 
               <TextInput
                 value={password}
@@ -201,7 +201,8 @@ const styles = StyleSheet.create({
   textHeader: {
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: 30,
+    fontSize: 33,
+    fontFamily: 'lato'
   },
   buttonText: {
     textAlign: 'center',
@@ -210,9 +211,13 @@ const styles = StyleSheet.create({
   textLabel: {
     marginLeft: 30,
     marginBottom: 10,
+    fontFamily: 'lato',
+    fontSize: 16,
+    paddingLeft: 7
   },
   textHelp: {
     marginLeft: 30,
+    fontFamily: 'lato'
   },
   textHelpLink: {
     color: '#30e3ca'
