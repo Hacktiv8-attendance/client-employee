@@ -34,11 +34,16 @@ const styles = StyleSheet.create({
     borderColor: '#30e3ca'
   },
   logo: {
-    backgroundColor: '#30e3ca',
-    borderRadius: 45,
+    backgroundColor: '#11999e',
+    borderRadius: 20,
     padding: 10,
     paddingTop: 5,
     paddingBottom: 5,
-    marginTop: -39
+    marginTop: -39,
+    borderColor: "#30e3ca",
+    borderWidth: 5,
+    borderTopWidth: 5,
+    borderLeftWidth: 5,
+    borderRightWidth: 5
   },
 })

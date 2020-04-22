@@ -185,6 +185,11 @@ const absent = (data) => {
     const locEmployee = { latitude, longitude }
     const locOffice = { latitude: -6.468127, longitude: 106.765711 }
     const distance = haversine(locEmployee, locOffice)
+
+    if (distance > 500) {
+      console.log(locEmployee)
+      return dispatch(setError('Out of distance! Please scan near the office'))
+    }
     axios({
       method: 'post',
       url: `${serverUrl}/employee/sendQR`,

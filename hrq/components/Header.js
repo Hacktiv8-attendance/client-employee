@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native'
 import TabBarIcon from './TabBarIcon';
 
+
 export default function Header ({title}) {
   const user = useSelector(state => state.user)
   const navigation = useNavigation()

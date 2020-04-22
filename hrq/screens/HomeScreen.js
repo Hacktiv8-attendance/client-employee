@@ -155,6 +155,10 @@ export default function HomeScreen () {
     </View>
   )
 
+  if(user.error) {
+    setTimeout(() => dispatch(allAction.user.setError(null)), 5000)
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.statusBar}/>
@@ -192,8 +196,11 @@ export default function HomeScreen () {
           <View>
           { scanned && user.loading === false
             ? <Text style={styles.textStatus}>Successfully record your timestamp</Text>
-            : <Text style={[styles.textStatus, {color: '#e4f9f5'}]}>Successfully record your timestamp</Text>
+            : user.error ? 
+            <Text style={[styles.textStatus, {color: 'red'}]}>{user.error}</Text> :
+            <Text style={[styles.textStatus, {color: '#e4f9f5'}]}>Successfully record your timestamp</Text> 
           }
+
           </View>
             
           <Camera
