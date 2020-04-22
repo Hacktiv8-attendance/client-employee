@@ -118,7 +118,7 @@ const findEmail = (data) => {
       .then(({ data }) => {
         dispatch({type: "SET_RESET_CODE", payload: data.code})
       })
-      .catch(err => {
+      .catch(_ => {
         dispatch(setError('Email not Found'))
       })
       .finally(() => {
@@ -171,7 +171,7 @@ const requestPaidLeave = (data) => {
       .then(_ => {
         dispatch(setStatusPaidLeave('Request has been send'))
       })
-      .catch(err => {
+      .catch(_ => {
         dispatch(setStatusPaidLeave('Request cannot be process, please contact your superior'))
       })
   }
@@ -185,11 +185,13 @@ const absent = (data) => {
     const locEmployee = { latitude, longitude }
     const locOffice = { latitude: -6.468127, longitude: 106.765711 }
     const distance = haversine(locEmployee, locOffice)
-
-    if (distance > 500) {
-      console.log(locEmployee)
-      return dispatch(setError('Out of distance! Please scan near the office'))
+    
+    if (Number(distance) > 500) {
+      dispatch(setStatusAbsence('Absence failed, please check your location'))
+      dispatch(setLoading(false))
+      return
     }
+    
     axios({
       method: 'post',
       url: `${serverUrl}/employee/sendQR`,
@@ -201,8 +203,7 @@ const absent = (data) => {
         token
       }
     })
-    .then(({ data }) => {
-      dispatch(setStatusAbsence(data))
+    .then(_ => {
       dispatch(setLoading(false))
       dispatch(setClick(false))
     })
@@ -331,5 +332,6 @@ export default {
   setPaidLeave,
   fetchBroadcast,
   setTokenNotif,
-  setClick
+  setClick,
+  setStatusAbsence
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { View, Text, StyleSheet, RefreshControl, AsyncStorage, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, RefreshControl, AsyncStorage, ActivityIndicator, TouchableOpacity, BackHandler } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Camera } from 'expo-camera';
 import { Ionicons } from '@expo/vector-icons';
@@ -12,13 +12,23 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 
-export default function HomeScreen () {
+export default function HomeScreen ({ navigation}) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [refreshing, setRefreshing] = useState(false)
+  const [message, setMessage] = useState(false)
   const clock = moment(new Date()).format("dddd, MMMM Do YYYY, HH:mm:ss");
   const user = useSelector(state => state.user)
   const dispatch = useDispatch()
+
+  BackHandler.addEventListener('hardwareBackPress', () => {
+    navigation.navigate('Scan')
+    return true
+  })
+
+  if (message && user.loading === false) {
+    setTimeout(() => setMessage(false), 3000)
+  }
 
   function wait(timeout) {
     return new Promise(resolve => {
@@ -50,6 +60,7 @@ export default function HomeScreen () {
   }
 
   const handleBarCodeScanned = ({ type, data }) => {
+    setMessage(true)
     setScanned(true);
     dispatch(allAction.user.absent({ jwt: data, EmployeeId: user.payload.id, token: user.token, latitude: user.location.coords.latitude, longitude: user.location.coords.longitude}))
   };
@@ -194,11 +205,11 @@ export default function HomeScreen () {
           </View>
 
           <View>
-          { scanned && user.loading === false
-            ? <Text style={styles.textStatus}>Successfully record your timestamp</Text>
-            : user.error ? 
-            <Text style={[styles.textStatus, {color: 'red'}]}>{user.error}</Text> :
-            <Text style={[styles.textStatus, {color: '#e4f9f5'}]}>Successfully record your timestamp</Text> 
+          { scanned && user.loading === false && message
+            ? user.statusAbsence
+            ? <Text style={[styles.textStatus, {color: 'red', alignSelf: 'center'}]}>{user.statusAbsence}</Text>
+            : <Text style={styles.textStatus}>Successfully record your timestamp</Text>
+            : <Text style={[styles.textStatus, {color: '#e4f9f5'}]}>Successfully record your timestamp</Text>
           }
 
           </View>
@@ -228,7 +239,11 @@ export default function HomeScreen () {
               {
                 scanned && user.loading === false &&
                 (
-                  <TouchableOpacity style={styles.button} onPress={() => setScanned(false)}>
+                  <TouchableOpacity style={styles.button} onPress={() => {
+                    setScanned(false)
+                    dispatch(allAction.user.setStatusAbsence(''))
+                    }}
+                  >
                     <Text style={styles.text}>Scan Again</Text>
                   </TouchableOpacity>
                 )

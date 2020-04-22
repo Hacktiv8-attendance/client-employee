@@ -23,7 +23,8 @@ const initialReducers = {
   emailReset: '',
   paidLeave: [],
   resetCode: null,
-  click: false
+  click: false,
+  statusScan: false,
 }
 
 export default function userReducers (state = initialReducers, action) {
@@ -60,6 +61,8 @@ export default function userReducers (state = initialReducers, action) {
       return {...state, tokenNotif: action.payload}
     case 'SET_CLICK':
       return {...state, click: action.payload}
+    case 'SET_STATUS_SCAN':
+      return {... state, statusScan: action.payload}
     default:
       return state;
   }
