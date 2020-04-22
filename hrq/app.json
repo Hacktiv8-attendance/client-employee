@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "hrq",
+    "name": "HRQ",
     "slug": "hrq",
     "platforms": [
       "ios",
@@ -24,6 +24,10 @@
     ],
     "ios": {
       "supportsTablet": true
+    },
+    "android": {
+      "package": "com.chromefox.hrq",
+      "versionCode": 1
     }
   }
 }

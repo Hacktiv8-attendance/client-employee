@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import { View, StyleSheet, ActivityIndicator, ScrollView, RefreshControl } from 'react-native';
+import { View, StyleSheet, ActivityIndicator, ScrollView, RefreshControl, Text } from 'react-native';
 import Constant from 'expo-constants';
 import Header from '../components/Header';
 import allAction from '../store/actions';
@@ -64,12 +64,15 @@ export default function ApprovalScreen() {
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
             >
-                {paidLeave.filter(element => element.completed !== true).map((element, index) => (
+                {paidLeave.length > 0
+                    ? paidLeave.filter(element => element.completed !== true).map((element, index) => (
                     <ListPaidLeave
                         data={element}
                         key={index}
                     />
-                ))}
+                    ))
+                    : <Text style={styles.textBlank}>There is no request for approval</Text>
+                }
             </ScrollView>
 
             <Footer />
@@ -82,6 +85,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#e4f9f5',
+    },
+    textBlank: {
+        textAlign: 'center',
+        fontSize: 20,
+        marginTop: 200
+        
     },
     statusBar: {
         height: Constant.statusBarHeight,
