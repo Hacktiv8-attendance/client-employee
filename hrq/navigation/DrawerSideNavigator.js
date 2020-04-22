@@ -16,7 +16,7 @@ export default function DrawerSideNavigator () {
     <Drawer.Navigator drawerStyle={{backgroundColor: '#e4f9f5'}}>
       <Drawer.Screen name= 'Scan' component={HomeScreen} options={{
         drawerIcon: ({ focused }) => (
-          <TabBarIcon focused={focused} name="md-qr-scanner" />
+          <TabBarIcon focused={focused} name="md-qr-scanner"/>
         ),
       }} />
 

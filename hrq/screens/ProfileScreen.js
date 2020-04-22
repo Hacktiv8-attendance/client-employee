@@ -27,16 +27,16 @@ export default function ProfileScreen () {
           />
         </View>
         <View style={styles.containerData}>
-          <View style={{paddingTop: 80, backgroundColor: '#30e3ca', borderBottomLeftRadius: 30, borderBottomRightRadius: 30}}>
-            <Text style={[styles.textData, {fontSize: 30, textAlign: 'center', color: 'black'}]}>{user.payload.name}</Text>
-            <Text style={[styles.textData, {fontSize: 15, textAlign: 'center', color: 'black'}]}>{user.payload.role}</Text>
-            <Text style={[styles.textData, {fontSize: 15, marginBottom: 20, textAlign: 'center', color: 'black'}]}>{user.payload.email}</Text>
+          <View style={{paddingTop: 80, backgroundColor: '#11999e', borderBottomLeftRadius: 30, borderBottomRightRadius: 30}}>
+            <Text style={[styles.textData, {fontSize: 30, textAlign: 'center', color: 'white', fontFamily: 'manrope'}]}>{user.payload.name}</Text>
+            <Text style={[styles.textData, {fontSize: 15, textAlign: 'center', color: 'white'}]}>{user.payload.role}</Text>
+            <Text style={[styles.textData, {fontSize: 15, marginBottom: 20, textAlign: 'center', color: 'white'}]}>{user.payload.email}</Text>
           </View>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View style={{flex: 1, marginRight: 10}}>
               <Text style={[styles.textData, {fontSize: 15, fontWeight: 'bold', marginTop: 15}]}>Contact</Text>
               <View >
-                <Text style={styles.textData}>Address : {user.payload.address}</Text>
+                <Text style={styles.textData}>Address             : {user.payload.address}</Text>
                 <Text style={styles.textData}>Phone Number : {user.payload.phoneNumber}</Text>
               </View>
             </View>
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#11999e',
   },
   textData: {
-    color: '#e4f9f5'
+    color: 'black'
   },
   containerBody: {
     flex: 1,
@@ -71,7 +71,8 @@ const styles = StyleSheet.create({
     padding: 30,
     paddingTop: 0,
     borderRadius: 30,
-    backgroundColor: '#11999e'
+    backgroundColor: '#c6c3ba'
+    // backgroundColor: '#11999e'
   },
   containerImage: {
     marginBottom: -75,
