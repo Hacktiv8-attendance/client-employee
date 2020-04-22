@@ -102,7 +102,7 @@ export default function LandingScreen () {
           
             <View style={styles.logoContainer}>
               <Image
-                source={require('../assets/images/login-logo.jpeg')}
+                source={require('../assets/images/logo-login.png')}
                 style={styles.logoImage}
               />
             </View>
@@ -226,7 +226,6 @@ const styles = StyleSheet.create({
   logoContainer: {
     alignItems: 'center',
     marginTop: 10,
-    marginBottom: 20,
   },
   input: {
     borderWidth: 1,

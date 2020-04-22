@@ -29,7 +29,7 @@ export default function HomeScreen () {
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     dispatch(allAction.user.setLoading(true))
-    wait(1000).then(() => {
+    wait(50).then(() => {
       setRefreshing(false)
       dispatch(allAction.user.setLoading(false))
     });
@@ -56,6 +56,7 @@ export default function HomeScreen () {
 
   useEffect(() => {
     (async () => {
+      dispatch(allAction.user.setLoading(true))
       const { status } = await Camera.requestPermissionsAsync();
       setHasPermission(status === 'granted');
     })();

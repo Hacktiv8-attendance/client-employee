@@ -73,10 +73,11 @@ export default function ClaimCutiScreen ({ navigation }) {
                   value={start}
                   mode='date'
                   display="default"
-                  onChange={(event, selectedDate) => {
+                  onChange={(_, selectedDate) => {
                     const date = selectedDate || start
                     setShow('')
                     setStart(date)
+                    setFinish(date)
                   }}
                   minimumDate={today}
                 />}
@@ -94,7 +95,7 @@ export default function ClaimCutiScreen ({ navigation }) {
                   value={finish}
                   mode='date'
                   display="default"
-                  onChange={(event, selectedDate) => {
+                  onChange={(_, selectedDate) => {
                     const date = selectedDate || start
                     setShow('')
                     setFinish(date)
