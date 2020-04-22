@@ -20,7 +20,6 @@ export default function History () {
   }
 
   const onRefresh = useCallback(() => {
-    console.log('masukkk')
     setRefreshing(true);
     dispatch(allAction.user.fetchAbsence({ id: user.payload.id, token: user.token }))
     wait(2000).then(() => setRefreshing(false));
@@ -48,7 +47,7 @@ export default function History () {
       <Footer />
     </View>
   )
-  
+
   return (
     <View style={styles.container}>
       <View style={styles.statusBar}/>

@@ -31,11 +31,9 @@ export default function LandingScreen () {
       let value = await AsyncStorage.getItem('userStorage')
       value = JSON.parse(value)
       if (value) {
-        console.log('dapet data: ====== ', value)
         dispatch(allAction.user.setUser(value))
         navigation.navigate('Root')
       } else {
-        console.log('kosooooong')
         dispatch(allAction.user.setLoading(false))
       }
     } catch (error) {
@@ -59,7 +57,6 @@ export default function LandingScreen () {
   }, [])
 
   const handleLogin = () => {
-    console.log('masuk')
     setBtnLoading(true)
     dispatch(allAction.user.login({email, password}))
   }
@@ -157,7 +154,7 @@ export default function LandingScreen () {
             </View>
 
             <View style={styles.containerHelp}>
-              <Text style={styles.textHelp}>forgot Password? {linkForgotPassword}</Text>
+              <Text style={styles.textHelp}>Forgot password? {linkForgotPassword}</Text>
             </View>
           </View>
         </TouchableWithoutFeedback>

@@ -29,21 +29,16 @@ const initialReducers = {
 export default function userReducers (state = initialReducers, action) {
   switch (action.type) {
     case 'SET_USER':
-      console.log('masuk root set User')
       return {...state, token: action.payload.token, payload: action.payload.payload}
     case 'SET_LOADING':
-      console.log('masuk root set Loading')
       return {...state, loading: action.payload}
     case 'SET_STATUS_PAID_LEAVE':
-      console.log('masuk root set paid leave')
       return {...state, statusPaidLeave: action.payload}
     case 'SET_LOGIN':
       return {...state, successLogin: action.payload}
     case 'SET_LOCATION':
-      console.log('setLocation', action.payload)
       return {...state, location: action.payload}
     case 'SET_ERROR':
-      console.log('masuk root set ERROR')
       return {...state, error: action.payload}
     case "SET_STATUS_ABSENCE":
       return {...state, statusAbsence: action.payload}
@@ -58,7 +53,6 @@ export default function userReducers (state = initialReducers, action) {
     case 'APPROVE_PAIDLEAVE' :
       return {...state, paidLeave: [...state.paidLeave].filter(paidLeave => paidLeave.id !== action.payload)}
     case 'SET_BROADCAST':
-      console.log(action.payload,'masuk set broadcast =================')
       return {...state, broadcast: action.payload}
     case 'SET_RESET_CODE':
       return {...state, resetCode: action.payload}
@@ -67,7 +61,6 @@ export default function userReducers (state = initialReducers, action) {
     case 'SET_CLICK':
       return {...state, click: action.payload}
     default:
-      console.log('masuk default')
       return state;
   }
 }

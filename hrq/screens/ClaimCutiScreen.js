@@ -7,40 +7,34 @@ import Header from '../components/Header';
 import allAction from '../store/actions';
 import moment from 'moment';
 import Footer from '../components/Footer';
-import DatePicker from 'react-native-datepicker'
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function ClaimCutiScreen ({ navigation }) {
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
   const [reason, setReason] = useState('');
+  const [show, setShow] = useState(false)
   const [start, setStart] = useState(new Date());
   const [finish, setFinish] = useState(new Date());
   const [btnLoading, setBtnLoading] = useState(false);
+  const today = new Date()
   
   function handleButton () {
     setBtnLoading(true);
     let now = moment(start)
     let end = moment(finish)
     let duration = moment.duration(end.diff(now)).asDays() + 1
-
-    if(duration > user.payload.paidLeave) {
-      setBtnLoading(false)
-      return alert("You don't have enough paid leave remaining")
-    }
     dispatch(allAction.user.requestPaidLeave({ SuperiorId: user.payload.SuperiorId, token: user.token, reason, duration: Math.ceil(duration), leaveDate: new Date(start) }))
-
   }
 
   if (user.statusPaidLeave) {
     setTimeout(() => {
-      console.log('masuk')
       setBtnLoading(false)
       setReason('')
       setStart(new Date())
       setFinish(new Date())
       dispatch(allAction.user.setStatusPaidLeave(''))
     }, 2000)
-    
   }
 
   return (
@@ -69,45 +63,45 @@ export default function ClaimCutiScreen ({ navigation }) {
             <View style={{flexDirection: 'row', marginBottom: 30}}>
               <View style={{flex: 1, marginRight: 8}}>
                 <Text>Start Date :</Text>
-                <DatePicker
-                  date={start}
-                  mode="date"
-                  placeholder="select date"
-                  minDate={start}
-                  confirmBtnText="Confirm"
-                  cancelBtnText="Cancel"
-                  customStyles={{
-                    dateIcon: {
-                      display: 'none'
-                    },
-                    dateInput: styles.inputDate
-                    
-                  }}
-                  onDateChange={(date) => {
+                <TouchableOpacity
+                  style={styles.inputDate}
+                  onPress={() => setShow('start')}
+                >
+                  <Text>{moment(start).format('L')}</Text>
+                </TouchableOpacity>
+                {show === 'start' && <DateTimePicker 
+                  value={start}
+                  mode='date'
+                  display="default"
+                  onChange={(event, selectedDate) => {
+                    const date = selectedDate || start
+                    setShow('')
                     setStart(date)
-                    setFinish(date)
                   }}
-                />
+                  minimumDate={today}
+                />}
               </View>
 
               <View style={{flex: 1,marginLeft: 8}}>
                 <Text>Finish Date :</Text>
-                <DatePicker
-                  date={finish}
-                  mode="date"
-                  placeholder="select date"
-                  minDate={start}
-                  confirmBtnText="Confirm"
-                  cancelBtnText="Cancel"
-                  customStyles={{
-                    dateIcon: {
-                      display: 'none'
-                    },
-                    dateInput: styles.inputDate
-                    
+                <TouchableOpacity
+                  style={styles.inputDate}
+                  onPress={() => setShow('finish')}
+                >
+                  <Text>{moment(finish).format('L')}</Text>
+                </TouchableOpacity>
+                {show === 'finish' && <DateTimePicker 
+                  value={finish}
+                  mode='date'
+                  display="default"
+                  onChange={(event, selectedDate) => {
+                    const date = selectedDate || start
+                    setShow('')
+                    setFinish(date)
                   }}
-                  onDateChange={(date) => {setFinish(date)}}
-                />
+                  minimumDate={start}
+                  maximumDate={new Date(moment(start).add(user.payload.paidLeave - 1, 'd').format('DD MMMM YYYY'))}
+                />}
               </View>
             </View>
           </View>
@@ -159,6 +153,7 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     paddingLeft: 10,
+    marginTop: 10,
     marginBottom: 30,
     maxWidth: 700,
     height: 50,

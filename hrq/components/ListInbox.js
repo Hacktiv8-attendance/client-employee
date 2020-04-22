@@ -9,7 +9,6 @@ export default function ListInbox ({ message }) {
   const [marginTop, setMarginTop] = useState(-60)
   const [border, setBorder] = useState(15)
   const [bottom, setBottom] = useState(30)
-  console.log(message)
 
   return (
     <View style={{marginBottom: bottom}}>

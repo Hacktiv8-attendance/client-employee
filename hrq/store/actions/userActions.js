@@ -80,7 +80,6 @@ const fetchBroadcast = (token) => {
         dispatch(setLoading(false))
       })
       .catch(err => {
-        console.log(err.response.data.message)
         dispatch(setError(err.response.data.message))
         dispatch(setLoading(false))
       })
@@ -90,19 +89,15 @@ const fetchBroadcast = (token) => {
 const resetPassword = (data) => {
   return (dispatch) => {
     dispatch(setLoading(true))
-    console.log(data)
     axios({
       method: 'POST',
       url: `${serverUrl}/employee/resetPassword`,
       data
     })
       .then(({ data }) => {
-        console.log(data)
         dispatch(setResetPassword(true))
       })
       .catch(err => {
-        console.log('INI ERRORRR')
-        console.log(err.response)
         dispatch(setError('Email not Found'))
       })
       .finally(() => {
@@ -121,12 +116,9 @@ const findEmail = (data) => {
       data
     })
       .then(({ data }) => {
-        console.log('MASUK SINIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII')
         dispatch({type: "SET_RESET_CODE", payload: data.code})
       })
       .catch(err => {
-        console.log('INI ERRORRR')
-        console.log(err.response)
         dispatch(setError('Email not Found'))
       })
       .finally(() => {
@@ -144,12 +136,10 @@ const login = (data) => {
       data
     })
       .then(({ data }) => {
-        console.log(data, '===succsess')
         dispatch(setUser(data))
         dispatch(setLogin(true))
       })
       .catch(err => {
-        console.log(err.response.data.message)
         dispatch(setError(err.response.data.message))
       })
   }
@@ -163,7 +153,6 @@ const setStatusPaidLeave = (status) => {
 }
 
 const requestPaidLeave = (data) => {
-  console.log(data)
   const { SuperiorId, reason, leaveDate, duration, token } = data
   return (dispatch) => {
     axios({
@@ -183,7 +172,6 @@ const requestPaidLeave = (data) => {
         dispatch(setStatusPaidLeave('Request has been send'))
       })
       .catch(err => {
-        console.log(err.response.data)
         dispatch(setStatusPaidLeave('Request cannot be process, please contact your superior'))
       })
   }
@@ -284,7 +272,6 @@ const fetchPaidLeave = ({ token }) => {
       dispatch(setPaidLeave(data))
     })
     .catch(err => {
-      console.log(err.response.data)
       dispatch(setError(err.response.data.message))
     })
     .finally(() => dispatch(setLoading(false)))

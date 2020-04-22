@@ -17,12 +17,10 @@ export default function ListPaidLeave ({data}) {
 
   const approval = (status) => {
     const payload = { status, id: data.id, token: user.token }
-    console.log(payload)
     dispatch(allAction.user.approvePaidLeave(payload))
   }
 
   const unClick = (type) => {
-    console.log(type, '=======masuk=================')
     if (type === 'approve') {
       setApprove(false)
       dispatch(allAction.user.setClick(false))

@@ -21,7 +21,6 @@ export default function ApprovalScreen() {
     }
   
     const onRefresh = useCallback(() => {
-      console.log('masukkk')
       setRefreshing(true);
       dispatch(allAction.user.fetchPaidLeave({ token: user.token}))
       wait(2000).then(() => setRefreshing(false));
